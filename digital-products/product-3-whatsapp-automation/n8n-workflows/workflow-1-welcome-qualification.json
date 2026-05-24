@@ -1,0 +1,369 @@
+{
+  "name": "Workflow 1: WhatsApp Welcome + Lead Qualification",
+  "description": "Automatically welcomes new WhatsApp contacts, qualifies them with 3 questions, saves to CRM, and alerts sales team for hot leads",
+  "version": "1.0",
+  "setup_instructions": {
+    "step_1": "Import this JSON into n8n: n8n dashboard → Workflows → Import from JSON",
+    "step_2": "Configure credentials: Add your 360dialog API key in the WhatsApp node",
+    "step_3": "Configure CRM node: Connect your Google Sheets or Airtable",
+    "step_4": "Configure Slack node: Add your Slack webhook for hot lead alerts",
+    "step_5": "Activate workflow → Test with a new WhatsApp message",
+    "important": "Replace all [PLACEHOLDER] values with your actual business information before activating"
+  },
+  "nodes": [
+    {
+      "id": "webhook_trigger",
+      "name": "WhatsApp Incoming Message",
+      "type": "n8n-nodes-base.webhook",
+      "position": [240, 300],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "whatsapp-incoming",
+        "responseMode": "onReceived",
+        "responseData": "allEntries"
+      },
+      "description": "Receives incoming WhatsApp messages via 360dialog webhook"
+    },
+    {
+      "id": "extract_contact",
+      "name": "Extract Contact Data",
+      "type": "n8n-nodes-base.set",
+      "position": [440, 300],
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "phone",
+              "value": "={{$json.entry[0].changes[0].value.contacts[0].wa_id}}"
+            },
+            {
+              "name": "name",
+              "value": "={{$json.entry[0].changes[0].value.contacts[0].profile.name}}"
+            },
+            {
+              "name": "message",
+              "value": "={{$json.entry[0].changes[0].value.messages[0].text.body}}"
+            },
+            {
+              "name": "timestamp",
+              "value": "={{$now.toISO()}}"
+            },
+            {
+              "name": "message_id",
+              "value": "={{$json.entry[0].changes[0].value.messages[0].id}}"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "check_existing_contact",
+      "name": "Check if Existing Contact",
+      "type": "n8n-nodes-base.googleSheets",
+      "position": [640, 300],
+      "parameters": {
+        "operation": "lookup",
+        "sheetId": "[YOUR_GOOGLE_SHEET_ID]",
+        "range": "Leads!A:Z",
+        "lookupColumn": "phone",
+        "lookupValue": "={{$json.phone}}"
+      },
+      "description": "Check CRM/Google Sheets if this contact already exists"
+    },
+    {
+      "id": "is_new_contact",
+      "name": "New Contact?",
+      "type": "n8n-nodes-base.if",
+      "position": [840, 300],
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json.length}}",
+              "operation": "equal",
+              "value2": "0"
+            }
+          ]
+        }
+      },
+      "description": "Branch: New contact gets welcome flow, existing contact goes to support flow"
+    },
+    {
+      "id": "send_welcome",
+      "name": "Send Welcome Message",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [1040, 200],
+      "parameters": {
+        "method": "POST",
+        "url": "https://waba.360dialog.io/v1/messages",
+        "headers": {
+          "D360-API-KEY": "[YOUR_360DIALOG_API_KEY]",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "to": "={{$('extract_contact').item.json.phone}}",
+          "type": "text",
+          "text": {
+            "body": "Hi {{$('extract_contact').item.json.name}}! 👋\n\nWelcome to [YOUR BUSINESS NAME]! I'm your virtual assistant.\n\nHow can I help you today?\n\n1️⃣ Product/service info\n2️⃣ Book an appointment\n3️⃣ Get a quote\n4️⃣ Track my order\n5️⃣ Speak to the team\n\nReply with a number or ask me anything!"
+          }
+        }
+      }
+    },
+    {
+      "id": "save_new_contact",
+      "name": "Save New Contact to CRM",
+      "type": "n8n-nodes-base.googleSheets",
+      "position": [1240, 200],
+      "parameters": {
+        "operation": "append",
+        "sheetId": "[YOUR_GOOGLE_SHEET_ID]",
+        "range": "Leads!A:Z",
+        "values": {
+          "phone": "={{$('extract_contact').item.json.phone}}",
+          "name": "={{$('extract_contact').item.json.name}}",
+          "first_contact": "={{$('extract_contact').item.json.timestamp}}",
+          "status": "NEW",
+          "stage": "WELCOME_SENT",
+          "source": "WhatsApp",
+          "notes": "First message: {{$('extract_contact').item.json.message}}"
+        }
+      }
+    },
+    {
+      "id": "wait_for_reply",
+      "name": "Wait for Reply (30 min)",
+      "type": "n8n-nodes-base.wait",
+      "position": [1440, 200],
+      "parameters": {
+        "resume": "webhook",
+        "webhookSuffix": "={{$('extract_contact').item.json.phone}}-reply",
+        "limitType": "afterTimeInterval",
+        "resumeAmount": 30,
+        "resumeUnit": "minutes"
+      }
+    },
+    {
+      "id": "qualification_q1",
+      "name": "Send Qualification Question 1",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [1640, 200],
+      "parameters": {
+        "method": "POST",
+        "url": "https://waba.360dialog.io/v1/messages",
+        "headers": {
+          "D360-API-KEY": "[YOUR_360DIALOG_API_KEY]",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "to": "={{$('extract_contact').item.json.phone}}",
+          "type": "text",
+          "text": {
+            "body": "Great! Just 3 quick questions to get you the right help:\n\n1️⃣ What are you looking for?\n\nA) [SERVICE/PRODUCT 1]\nB) [SERVICE/PRODUCT 2]\nC) [SERVICE/PRODUCT 3]\nD) Something else\n\nReply with A, B, C, or D 😊"
+          }
+        }
+      }
+    },
+    {
+      "id": "wait_q1_reply",
+      "name": "Wait for Q1 Reply",
+      "type": "n8n-nodes-base.wait",
+      "position": [1840, 200],
+      "parameters": {
+        "resume": "webhook",
+        "webhookSuffix": "={{$('extract_contact').item.json.phone}}-q1",
+        "limitType": "afterTimeInterval",
+        "resumeAmount": 60,
+        "resumeUnit": "minutes"
+      }
+    },
+    {
+      "id": "qualification_q2",
+      "name": "Send Qualification Question 2 (Budget)",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [2040, 200],
+      "parameters": {
+        "method": "POST",
+        "url": "https://waba.360dialog.io/v1/messages",
+        "headers": {
+          "D360-API-KEY": "[YOUR_360DIALOG_API_KEY]",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "to": "={{$('extract_contact').item.json.phone}}",
+          "type": "text",
+          "text": {
+            "body": "Perfect! 🎯\n\n2️⃣ What's your approximate budget?\n\nA) Under AED 1,000\nB) AED 1,000 - 5,000\nC) AED 5,000 - 20,000\nD) Above AED 20,000\n\nReply A, B, C, or D"
+          }
+        }
+      }
+    },
+    {
+      "id": "wait_q2_reply",
+      "name": "Wait for Q2 Reply",
+      "type": "n8n-nodes-base.wait",
+      "position": [2240, 200],
+      "parameters": {
+        "resume": "webhook",
+        "webhookSuffix": "={{$('extract_contact').item.json.phone}}-q2",
+        "limitType": "afterTimeInterval",
+        "resumeAmount": 60,
+        "resumeUnit": "minutes"
+      }
+    },
+    {
+      "id": "qualification_q3",
+      "name": "Send Qualification Question 3 (Timeline)",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [2440, 200],
+      "parameters": {
+        "method": "POST",
+        "url": "https://waba.360dialog.io/v1/messages",
+        "headers": {
+          "D360-API-KEY": "[YOUR_360DIALOG_API_KEY]",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "to": "={{$('extract_contact').item.json.phone}}",
+          "type": "text",
+          "text": {
+            "body": "Almost there! Last one:\n\n3️⃣ When do you need this?\n\nA) This week (urgent)\nB) Within the next month\nC) Just researching for now\n\nReply A, B, or C"
+          }
+        }
+      }
+    },
+    {
+      "id": "wait_q3_reply",
+      "name": "Wait for Q3 Reply",
+      "type": "n8n-nodes-base.wait",
+      "position": [2640, 200],
+      "parameters": {
+        "resume": "webhook",
+        "webhookSuffix": "={{$('extract_contact').item.json.phone}}-q3",
+        "limitType": "afterTimeInterval",
+        "resumeAmount": 60,
+        "resumeUnit": "minutes"
+      }
+    },
+    {
+      "id": "score_lead",
+      "name": "Calculate Lead Score",
+      "type": "n8n-nodes-base.code",
+      "position": [2840, 200],
+      "parameters": {
+        "jsCode": "const budget = $('wait_q2_reply').item.json.budget_answer;\nconst timeline = $('wait_q3_reply').item.json.timeline_answer;\n\nlet score = 0;\n\n// Budget scoring\nif (budget === 'D') score += 40;  // AED 20,000+\nelse if (budget === 'C') score += 30;  // AED 5,000-20,000\nelse if (budget === 'B') score += 20;  // AED 1,000-5,000\nelse score += 5;  // Under AED 1,000\n\n// Timeline scoring\nif (timeline === 'A') score += 30;  // This week\nelse if (timeline === 'B') score += 20;  // This month\nelse score += 5;  // Just researching\n\nconst tier = score >= 50 ? 'HOT' : score >= 25 ? 'WARM' : 'COLD';\n\nreturn [{ json: { score, tier, budget, timeline } }];"
+      }
+    },
+    {
+      "id": "is_hot_lead",
+      "name": "Hot Lead?",
+      "type": "n8n-nodes-base.if",
+      "position": [3040, 200],
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json.tier}}",
+              "operation": "equal",
+              "value2": "HOT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "alert_sales_team",
+      "name": "Alert Sales Team (Hot Lead)",
+      "type": "n8n-nodes-base.slack",
+      "position": [3240, 100],
+      "parameters": {
+        "channel": "#hot-leads",
+        "text": "🔥 *HOT LEAD ALERT*\n\nName: {{$('extract_contact').item.json.name}}\nPhone: {{$('extract_contact').item.json.phone}}\nBudget: {{$('score_lead').item.json.budget}}\nTimeline: {{$('score_lead').item.json.timeline}}\nScore: {{$('score_lead').item.json.score}}/70\n\nContact them NOW — they need help this week!",
+        "webhookUrl": "[YOUR_SLACK_WEBHOOK_URL]"
+      }
+    },
+    {
+      "id": "send_handoff_message",
+      "name": "Send Handoff Message to Contact",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [3440, 150],
+      "parameters": {
+        "method": "POST",
+        "url": "https://waba.360dialog.io/v1/messages",
+        "headers": {
+          "D360-API-KEY": "[YOUR_360DIALOG_API_KEY]",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "to": "={{$('extract_contact').item.json.phone}}",
+          "type": "text",
+          "text": {
+            "body": "Thank you {{$('extract_contact').item.json.name}}! ✅\n\nBased on your requirements, I'm connecting you with our specialist [TEAM MEMBER NAME] who handles [RELEVANT AREA].\n\nThey'll be in touch within [TIME FRAME].\n\nIn the meantime, here's what our clients say:\n\"[SHORT TESTIMONIAL]\"\n\nAny questions while you wait? Just reply here! 😊"
+          }
+        }
+      }
+    },
+    {
+      "id": "update_crm_qualified",
+      "name": "Update CRM with Qualification",
+      "type": "n8n-nodes-base.googleSheets",
+      "position": [3640, 150],
+      "parameters": {
+        "operation": "update",
+        "sheetId": "[YOUR_GOOGLE_SHEET_ID]",
+        "range": "Leads!A:Z",
+        "lookupColumn": "phone",
+        "lookupValue": "={{$('extract_contact').item.json.phone}}",
+        "values": {
+          "status": "QUALIFIED",
+          "lead_score": "={{$('score_lead').item.json.score}}",
+          "lead_tier": "={{$('score_lead').item.json.tier}}",
+          "budget": "={{$('score_lead').item.json.budget}}",
+          "timeline": "={{$('score_lead').item.json.timeline}}",
+          "qualified_at": "={{$now.toISO()}}",
+          "stage": "HANDOFF_SENT"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "webhook_trigger": {"main": [["extract_contact"]]},
+    "extract_contact": {"main": [["check_existing_contact"]]},
+    "check_existing_contact": {"main": [["is_new_contact"]]},
+    "is_new_contact": {
+      "main": [
+        ["send_welcome"],
+        ["existing_contact_handler"]
+      ]
+    },
+    "send_welcome": {"main": [["save_new_contact"]]},
+    "save_new_contact": {"main": [["wait_for_reply"]]},
+    "wait_for_reply": {"main": [["qualification_q1"]]},
+    "qualification_q1": {"main": [["wait_q1_reply"]]},
+    "wait_q1_reply": {"main": [["qualification_q2"]]},
+    "qualification_q2": {"main": [["wait_q2_reply"]]},
+    "wait_q2_reply": {"main": [["qualification_q3"]]},
+    "qualification_q3": {"main": [["wait_q3_reply"]]},
+    "wait_q3_reply": {"main": [["score_lead"]]},
+    "score_lead": {"main": [["is_hot_lead"]]},
+    "is_hot_lead": {
+      "main": [
+        ["alert_sales_team", "send_handoff_message"],
+        ["send_handoff_message"]
+      ]
+    },
+    "send_handoff_message": {"main": [["update_crm_qualified"]]}
+  },
+  "settings": {
+    "timezone": "Asia/Dubai",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "last"
+  },
+  "notes": [
+    "IMPORTANT: Replace [YOUR_GOOGLE_SHEET_ID] with your actual Google Sheets ID",
+    "IMPORTANT: Replace [YOUR_360DIALOG_API_KEY] with your 360dialog API key",
+    "IMPORTANT: Replace [YOUR_SLACK_WEBHOOK_URL] with your Slack webhook",
+    "IMPORTANT: Replace [YOUR BUSINESS NAME] and all placeholder text",
+    "Test this workflow with test numbers before activating for production",
+    "Ensure your Google Sheet has columns: phone, name, first_contact, status, stage, source, notes, lead_score, lead_tier, budget, timeline, qualified_at"
+  ]
+}

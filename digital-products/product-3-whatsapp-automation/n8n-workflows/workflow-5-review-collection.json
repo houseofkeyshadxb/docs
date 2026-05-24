@@ -1,0 +1,218 @@
+{
+  "name": "Workflow 5: WhatsApp Review Collection Campaign",
+  "description": "Automatically requests Google reviews from customers 3 days after purchase/service delivery via WhatsApp",
+  "version": "1.0",
+  "setup_instructions": {
+    "step_1": "Set up a Google Sheet 'Orders' with columns: phone, name, order_date, delivered_date, review_requested, review_received",
+    "step_2": "Import this workflow into n8n",
+    "step_3": "Configure your Google Sheets credentials",
+    "step_4": "Configure your 360dialog WhatsApp API credentials",
+    "step_5": "Get your Google Business Profile review link: Go to Google Business Profile → Home → 'Get more reviews' → copy the short URL",
+    "step_6": "Schedule this workflow to run daily at 10 AM (Dubai time)"
+  },
+  "nodes": [
+    {
+      "id": "daily_schedule",
+      "name": "Daily Trigger (10 AM Dubai)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "position": [240, 300],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 10 * * *"
+            }
+          ]
+        },
+        "timezone": "Asia/Dubai"
+      }
+    },
+    {
+      "id": "get_eligible_customers",
+      "name": "Get Customers Eligible for Review Request",
+      "type": "n8n-nodes-base.googleSheets",
+      "position": [440, 300],
+      "parameters": {
+        "operation": "getAll",
+        "sheetId": "[YOUR_ORDERS_SHEET_ID]",
+        "range": "Orders!A:Z",
+        "filters": {
+          "conditions": [
+            {
+              "field": "review_requested",
+              "operator": "isEmpty"
+            },
+            {
+              "field": "delivered_date",
+              "operator": "isNotEmpty"
+            }
+          ]
+        }
+      },
+      "description": "Gets all orders where review hasn't been requested yet and item is delivered"
+    },
+    {
+      "id": "filter_3_days_post_delivery",
+      "name": "Filter: 3+ Days Since Delivery",
+      "type": "n8n-nodes-base.code",
+      "position": [640, 300],
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst today = new Date();\nconst eligibleCustomers = [];\n\nfor (const item of items) {\n  const deliveredDate = new Date(item.json.delivered_date);\n  const daysSinceDelivery = Math.floor((today - deliveredDate) / (1000 * 60 * 60 * 24));\n  \n  // Send review request between 3-10 days after delivery\n  if (daysSinceDelivery >= 3 && daysSinceDelivery <= 10) {\n    eligibleCustomers.push({\n      json: {\n        ...item.json,\n        days_since_delivery: daysSinceDelivery\n      }\n    });\n  }\n}\n\nconsole.log(`Found ${eligibleCustomers.length} customers eligible for review request`);\nreturn eligibleCustomers;"
+      }
+    },
+    {
+      "id": "loop_customers",
+      "name": "Loop Through Each Customer",
+      "type": "n8n-nodes-base.splitInBatches",
+      "position": [840, 300],
+      "parameters": {
+        "batchSize": 1,
+        "options": {
+          "reset": false
+        }
+      }
+    },
+    {
+      "id": "send_review_request",
+      "name": "Send Review Request via WhatsApp",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [1040, 300],
+      "parameters": {
+        "method": "POST",
+        "url": "https://waba.360dialog.io/v1/messages",
+        "headers": {
+          "D360-API-KEY": "[YOUR_360DIALOG_API_KEY]",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "to": "={{$json.phone}}",
+          "type": "text",
+          "text": {
+            "body": "Hi {{$json.name}}! 😊\n\n[YOUR BUSINESS NAME] here. We delivered your [ORDER/SERVICE] a few days ago.\n\nWe hope you're loving it! 🙏\n\nIf you're happy with your experience, could you take 30 seconds to leave us a review? It really helps other customers find us:\n\n⭐ Leave a Google Review:\n[YOUR_GOOGLE_REVIEW_LINK]\n\nIf anything isn't right, please just reply here and we'll fix it immediately.\n\nThank you so much!\n[YOUR NAME]\n[BUSINESS NAME]"
+          }
+        }
+      }
+    },
+    {
+      "id": "wait_48_hours",
+      "name": "Wait 48 Hours",
+      "type": "n8n-nodes-base.wait",
+      "position": [1240, 300],
+      "parameters": {
+        "resume": "timeInterval",
+        "resumeAmount": 48,
+        "resumeUnit": "hours"
+      }
+    },
+    {
+      "id": "check_review_received",
+      "name": "Check if Review Was Received",
+      "type": "n8n-nodes-base.googleSheets",
+      "position": [1440, 300],
+      "parameters": {
+        "operation": "lookup",
+        "sheetId": "[YOUR_ORDERS_SHEET_ID]",
+        "range": "Orders!A:Z",
+        "lookupColumn": "phone",
+        "lookupValue": "={{$json.phone}}"
+      }
+    },
+    {
+      "id": "has_review",
+      "name": "Review Already Received?",
+      "type": "n8n-nodes-base.if",
+      "position": [1640, 300],
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json.review_received}}",
+              "operation": "isNotEmpty"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "send_followup",
+      "name": "Send Follow-Up Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [1840, 400],
+      "parameters": {
+        "method": "POST",
+        "url": "https://waba.360dialog.io/v1/messages",
+        "headers": {
+          "D360-API-KEY": "[YOUR_360DIALOG_API_KEY]",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "to": "={{$json.phone}}",
+          "type": "text",
+          "text": {
+            "body": "Hi {{$json.name}}! Quick follow-up 😊\n\nDid you get a chance to try your [PRODUCT/SERVICE]?\n\nYour review means a lot to us and helps other customers:\n⭐ [YOUR_GOOGLE_REVIEW_LINK]\n\nOr if there's anything we could have done better, just reply here — no pressure at all!\n\n[BUSINESS NAME] Team"
+          }
+        }
+      }
+    },
+    {
+      "id": "mark_review_requested",
+      "name": "Mark Review as Requested in Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "position": [1840, 200],
+      "parameters": {
+        "operation": "update",
+        "sheetId": "[YOUR_ORDERS_SHEET_ID]",
+        "range": "Orders!A:Z",
+        "lookupColumn": "phone",
+        "lookupValue": "={{$json.phone}}",
+        "values": {
+          "review_requested": "={{$now.toISO()}}",
+          "review_status": "REQUESTED"
+        }
+      }
+    },
+    {
+      "id": "delay_between_messages",
+      "name": "Wait 2 Minutes Between Messages",
+      "type": "n8n-nodes-base.wait",
+      "position": [1040, 500],
+      "parameters": {
+        "resume": "timeInterval",
+        "resumeAmount": 2,
+        "resumeUnit": "minutes"
+      },
+      "description": "Prevents hitting WhatsApp rate limits when processing many customers"
+    }
+  ],
+  "connections": {
+    "daily_schedule": {"main": [["get_eligible_customers"]]},
+    "get_eligible_customers": {"main": [["filter_3_days_post_delivery"]]},
+    "filter_3_days_post_delivery": {"main": [["loop_customers"]]},
+    "loop_customers": {"main": [["send_review_request"]]},
+    "send_review_request": {"main": [["mark_review_requested", "delay_between_messages"]]},
+    "mark_review_requested": {"main": [["wait_48_hours"]]},
+    "wait_48_hours": {"main": [["check_review_received"]]},
+    "check_review_received": {"main": [["has_review"]]},
+    "has_review": {
+      "main": [
+        [],
+        ["send_followup"]
+      ]
+    }
+  },
+  "settings": {
+    "timezone": "Asia/Dubai",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "last",
+    "executionTimeout": 3600
+  },
+  "notes": [
+    "Replace [YOUR_ORDERS_SHEET_ID] with your Google Sheet ID",
+    "Replace [YOUR_360DIALOG_API_KEY] with your API key",
+    "Replace [YOUR_GOOGLE_REVIEW_LINK] with your Google Business Profile review link",
+    "Get Google Review link: Google Business Profile → Home → Get more reviews → copy link",
+    "This workflow runs daily — only contacts 3-10 days post-delivery receive messages",
+    "Important: Only send to customers who opted in to WhatsApp communications"
+  ]
+}
