@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The AI Agent Empire — Setup 6 Autonomous Agents in 48 Hours</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;600&display=swap');
+
+  :root {
+    --navy: #0A0E1A;
+    --blue: #00C8FF;
+    --purple: #7B2FBE;
+    --gold: #F59E0B;
+    --white: #FFFFFF;
+    --light: #A0C4E8;
+    --card: #0D1830;
+    --border: #1A2540;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', Arial, sans-serif;
+    background: #FFFFFF;
+    color: #1A1A2E;
+    line-height: 1.7;
+    font-size: 15px;
+  }
+
+  /* ── COVER PAGE ── */
+  .cover {
+    background: var(--navy);
+    color: white;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 60px 40px;
+    page-break-after: always;
+  }
+
+  .cover-badge {
+    display: inline-block;
+    border: 1.5px solid var(--blue);
+    border-radius: 20px;
+    padding: 6px 20px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--blue);
+    letter-spacing: 3px;
+    margin-bottom: 40px;
+  }
+
+  .cover h1 {
+    font-size: 64px;
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+
+  .cover h1 span { color: var(--blue); }
+
+  .cover .subtitle {
+    font-size: 22px;
+    color: var(--light);
+    margin-bottom: 50px;
+    font-weight: 300;
+  }
+
+  .agent-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    max-width: 660px;
+    margin: 0 auto 50px;
+  }
+
+  .agent-card {
+    background: var(--card);
+    border: 1.5px solid var(--blue);
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+  }
+
+  .agent-card .icon { font-size: 28px; margin-bottom: 8px; }
+  .agent-card .name { font-size: 11px; font-weight: 700; color: white; }
+  .agent-card .label { font-size: 10px; color: var(--light); margin-top: 2px; }
+
+  .agent-card.purple { border-color: var(--purple); }
+
+  .cover-price {
+    font-size: 48px;
+    font-weight: 900;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+
+  .cover-meta {
+    font-size: 13px;
+    color: #6688AA;
+    letter-spacing: 1px;
+  }
+
+  /* ── BODY CONTENT ── */
+  .content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 60px 40px;
+  }
+
+  h1 { font-size: 36px; font-weight: 900; color: #0A0E1A; margin: 40px 0 16px; line-height: 1.2; }
+  h2 { font-size: 26px; font-weight: 700; color: #0A0E1A; margin: 36px 0 14px; border-left: 4px solid #00C8FF; padding-left: 14px; }
+  h3 { font-size: 20px; font-weight: 600; color: #1A2540; margin: 28px 0 12px; }
+  h4 { font-size: 16px; font-weight: 600; color: #2A3550; margin: 20px 0 8px; }
+
+  p { margin-bottom: 16px; color: #2A3050; }
+
+  ul, ol { margin: 12px 0 16px 24px; }
+  li { margin-bottom: 8px; color: #2A3050; }
+
+  strong { color: #0A0E1A; }
+
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    background: #EEF2FF;
+    color: #3730A3;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 13px;
+  }
+
+  pre {
+    background: #0F1628;
+    color: #A0C4E8;
+    padding: 20px 24px;
+    border-radius: 10px;
+    overflow-x: auto;
+    margin: 16px 0 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    border-left: 3px solid #00C8FF;
+  }
+
+  pre code { background: none; color: inherit; padding: 0; }
+
+  /* Callout boxes */
+  .callout {
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin: 20px 0;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+
+  .callout.info { background: #EFF6FF; border-left: 4px solid #3B82F6; }
+  .callout.warning { background: #FFFBEB; border-left: 4px solid #F59E0B; }
+  .callout.success { background: #F0FDF4; border-left: 4px solid #22C55E; }
+  .callout.tip { background: #FAF5FF; border-left: 4px solid #A855F7; }
+
+  .callout-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .callout-text { font-size: 14px; color: #1A1A2E; }
+  .callout-text strong { display: block; margin-bottom: 4px; }
+
+  /* Agent section header */
+  .agent-header {
+    background: linear-gradient(135deg, #0A0E1A, #0D1830);
+    color: white;
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin: 32px 0 24px;
+    border: 1.5px solid #1A2540;
+  }
+
+  .agent-header .agent-number {
+    font-size: 12px;
+    font-weight: 700;
+    color: #00C8FF;
+    letter-spacing: 3px;
+    margin-bottom: 8px;
+  }
+
+  .agent-header h2 {
+    font-size: 28px;
+    color: white;
+    border: none;
+    padding: 0;
+    margin: 0 0 10px;
+  }
+
+  .agent-meta {
+    display: flex;
+    gap: 24px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+
+  .agent-meta-item {
+    font-size: 13px;
+    color: #7AA8CC;
+  }
+
+  .agent-meta-item strong { color: #00C8FF; }
+
+  /* Stats row */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 24px 0;
+  }
+
+  .stat-card {
+    background: #F8FAFF;
+    border: 1px solid #E0E8F8;
+    border-radius: 10px;
+    padding: 18px;
+    text-align: center;
+  }
+
+  .stat-card .number { font-size: 28px; font-weight: 900; color: #00C8FF; }
+  .stat-card .label { font-size: 12px; color: #6680A0; margin-top: 4px; }
+
+  /* Checklist */
+  .checklist { list-style: none; margin-left: 0; }
+  .checklist li {
+    padding: 8px 0 8px 32px;
+    position: relative;
+    border-bottom: 1px solid #F0F4FF;
+  }
+  .checklist li::before {
+    content: "☐";
+    position: absolute;
+    left: 0;
+    color: #00C8FF;
+    font-size: 18px;
+  }
+
+  /* Table */
+  table { width: 100%; border-collapse: collapse; margin: 16px 0 24px; font-size: 14px; }
+  th { background: #0A0E1A; color: white; padding: 12px 16px; text-align: left; font-weight: 600; }
+  td { padding: 10px 16px; border-bottom: 1px solid #E8EEF8; }
+  tr:nth-child(even) td { background: #F8FAFF; }
+
+  /* Section divider */
+  .section-break {
+    border: none;
+    border-top: 2px solid #E0E8F8;
+    margin: 48px 0;
+  }
+
+  /* Page break for print */
+  .page-break { page-break-before: always; }
+
+  /* Footer */
+  .footer {
+    background: #0A0E1A;
+    color: #4460A0;
+    text-align: center;
+    padding: 30px;
+    font-size: 12px;
+    margin-top: 60px;
+  }
+
+  /* Print styles */
+  @media print {
+    body { font-size: 13px; }
+    .cover { page-break-after: always; }
+    h2 { page-break-after: avoid; }
+    pre { page-break-inside: avoid; }
+    .agent-header { page-break-after: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<!-- COVER PAGE -->
+<div class="cover">
+  <div class="cover-badge">DIGITAL PRODUCT  •  VERSION 1.0</div>
+
+  <h1>THE AI AGENT<br><span>EMPIRE</span></h1>
+  <p class="subtitle">Setup 6 Autonomous Agents in 48 Hours</p>
+
+  <div class="agent-grid">
+    <div class="agent-card">
+      <div class="icon">📧</div>
+      <div class="name">INBOX</div>
+      <div class="label">GUARDIAN</div>
+    </div>
+    <div class="agent-card">
+      <div class="icon">✍️</div>
+      <div class="name">CONTENT</div>
+      <div class="label">ENGINE</div>
+    </div>
+    <div class="agent-card">
+      <div class="icon">🔍</div>
+      <div class="name">MARKET</div>
+      <div class="label">SCOUT</div>
+    </div>
+    <div class="agent-card purple">
+      <div class="icon">💰</div>
+      <div class="name">LEAD</div>
+      <div class="label">NURTURE</div>
+    </div>
+    <div class="agent-card purple">
+      <div class="icon">💻</div>
+      <div class="name">CODE</div>
+      <div class="label">MONKEY</div>
+    </div>
+    <div class="agent-card purple">
+      <div class="icon">📊</div>
+      <div class="name">ANALYTICS</div>
+      <div class="label">ORACLE</div>
+    </div>
+  </div>
+
+  <div class="cover-price">$97</div>
+  <div class="cover-meta">ONE-TIME PURCHASE  •  INSTANT DOWNLOAD  •  LIFETIME UPDATES</div>
+  <div style="margin-top:16px; font-size:12px; color:#334466;">Powered by Claude AI (Anthropic) — Python Scripts + CLAUDE.md Files Included</div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="content">
+
+  <h1>Welcome to Your AI Agent Empire</h1>
+
+  <p>Congratulations on taking the most powerful step toward business automation. In the next 48 hours, you will deploy <strong>6 fully autonomous AI agents</strong> that work around the clock — handling customer inquiries, generating content, researching competitors, managing your inbox, writing code, and nurturing leads — all without your direct involvement.</p>
+
+  <p>This is not theory. These are production-ready agents using Claude (Anthropic's AI), with ready-to-run Python scripts and CLAUDE.md configuration files included in your download.</p>
+
+  <div class="callout success">
+    <div class="callout-icon">✅</div>
+    <div class="callout-text">
+      <strong>What You Get</strong>
+      6 complete agent blueprints • 6 CLAUDE.md config files • Python scripts • 48-hour deployment schedule • Integration guides (Slack, Gmail, Notion) • Troubleshooting guide
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="number">6</div>
+      <div class="label">Autonomous Agents</div>
+    </div>
+    <div class="stat-card">
+      <div class="number">48h</div>
+      <div class="label">To Full Deployment</div>
+    </div>
+    <div class="stat-card">
+      <div class="number">~$16</div>
+      <div class="label">Monthly API Cost</div>
+    </div>
+  </div>
+
+  <hr class="section-break">
+
+  <!-- HOUR 0-4 -->
+  <h1>Hour 0–4: Foundation Setup</h1>
+
+  <h2>Step 1: Get Your API Keys (30 min)</h2>
+
+  <h3>A) Anthropic API — REQUIRED</h3>
+  <ol>
+    <li>Go to <code>console.anthropic.com</code></li>
+    <li>Create account → Billing → Add $20 credit (covers ~1 month of all 6 agents)</li>
+    <li>API Keys → Create Key → Copy and save as <code>ANTHROPIC_API_KEY</code></li>
+  </ol>
+
+  <div class="callout info">
+    <div class="callout-icon">💡</div>
+    <div class="callout-text">
+      <strong>Recommended Models</strong>
+      Use <code>claude-opus-4-7</code> for complex reasoning agents (Content Engine, Analytics Oracle).
+      Use <code>claude-haiku-4-5-20251001</code> for high-volume simple tasks (Inbox Guardian) to save cost.
+    </div>
+  </div>
+
+  <h3>B) Gmail API (for Inbox Guardian)</h3>
+  <ol>
+    <li>Go to <code>console.cloud.google.com</code></li>
+    <li>New Project → "AI Agent Empire"</li>
+    <li>Enable: Gmail API, Google Sheets API</li>
+    <li>Credentials → OAuth 2.0 → Download <code>credentials.json</code></li>
+  </ol>
+
+  <h2>Step 2: Environment Setup (1 hour)</h2>
+
+  <h3>Install Python Environment</h3>
+<pre><code># Verify Python 3.11+
+python3 --version
+
+# Create project directory
+mkdir ~/ai-agent-empire && cd ~/ai-agent-empire
+
+# Create virtual environment
+python3 -m venv venv
+source venv/bin/activate      # Mac/Linux
+# venv\Scripts\activate       # Windows
+
+# Install all dependencies
+pip install -r requirements.txt</code></pre>
+
+  <h3>Create Your .env File</h3>
+<pre><code>cp .env.example .env
+# Open .env in any text editor and fill in your API keys</code></pre>
+
+  <div class="callout warning">
+    <div class="callout-icon">⚠️</div>
+    <div class="callout-text">
+      <strong>Security</strong>
+      Always add <code>.env</code> to your <code>.gitignore</code>. Never commit API keys to any repository.
+    </div>
+  </div>
+
+  <hr class="section-break">
+
+  <!-- AGENT 1 -->
+  <div class="agent-header">
+    <div class="agent-number">AGENT 01 / 06</div>
+    <h2>The Inbox Guardian</h2>
+    <p style="color:#A0C4E8; margin:0 0 12px;">Triage, categorize, and draft replies for every email — automatically.</p>
+    <div class="agent-meta">
+      <div class="agent-meta-item">⏱ <strong>Deploy time:</strong> 2 hours</div>
+      <div class="agent-meta-item">💰 <strong>ROI:</strong> Saves 1–2 hours/day</div>
+      <div class="agent-meta-item">💵 <strong>Monthly cost:</strong> ~$2</div>
+      <div class="agent-meta-item">🤖 <strong>Model:</strong> claude-haiku-4-5-20251001</div>
+    </div>
+  </div>
+
+  <h3>What It Does</h3>
+  <ul>
+    <li>Reads your Gmail every 15 minutes</li>
+    <li>Categorizes every email: <strong>CLIENT, LEAD, URGENT, ADMIN, NEWSLETTER, SPAM</strong></li>
+    <li>Drafts intelligent replies for Client/Lead/Urgent emails</li>
+    <li>Sends Slack alerts for urgent issues</li>
+    <li>Auto-unsubscribes from newsletters you haven't opened in 30 days</li>
+  </ul>
+
+  <h3>Setup Steps</h3>
+  <ol>
+    <li>Run <code>python scripts/agent1_setup.py</code> — authenticates Gmail (opens browser once)</li>
+    <li>Open <code>claude-files/agent-1-inbox-guardian/CLAUDE.md</code> and add your business details</li>
+    <li>Add VIP client emails to the <code>VIP_LIST</code> in the CLAUDE.md</li>
+    <li>Run: <code>python scripts/agent1_inbox_guardian.py</code></li>
+  </ol>
+
+  <h3>Schedule It (runs every 15 min automatically)</h3>
+<pre><code># Add to crontab (Mac/Linux)
+crontab -e
+# Add this line:
+*/15 * * * * /path/to/venv/bin/python /path/to/agent1_inbox_guardian.py</code></pre>
+
+  <h3>Expected Console Output</h3>
+<pre><code>[10:00] Inbox Guardian running...
+[10:00] Found 12 unread emails
+[10:00] Categorized: 3 clients, 2 leads, 5 newsletters, 2 spam
+[10:00] Drafted 5 replies → saved to Gmail Drafts
+[10:00] ⚡ URGENT: 1 email flagged → Slack notification sent
+[10:00] Unsubscribed from: 3 newsletters
+[10:00] Done. Next run in 15 minutes.</code></pre>
+
+  <!-- AGENT 2 -->
+  <div class="agent-header page-break">
+    <div class="agent-number">AGENT 02 / 06</div>
+    <h2>The Content Engine</h2>
+    <p style="color:#A0C4E8; margin:0 0 12px;">Generates daily blog posts, social media content, and newsletters — all in your brand voice.</p>
+    <div class="agent-meta">
+      <div class="agent-meta-item">⏱ <strong>Deploy time:</strong> 1.5 hours</div>
+      <div class="agent-meta-item">💰 <strong>ROI:</strong> Replaces $1,500–3,000/month content team</div>
+      <div class="agent-meta-item">💵 <strong>Monthly cost:</strong> ~$5</div>
+      <div class="agent-meta-item">🤖 <strong>Model:</strong> claude-opus-4-7</div>
+    </div>
+  </div>
+
+  <h3>What It Produces Daily</h3>
+  <ul>
+    <li><strong>1 blog post</strong> (1,400–1,800 words, SEO-optimized) → saved to <code>/content/blog/</code></li>
+    <li><strong>5 social media posts</strong> (LinkedIn, Twitter, Instagram, Facebook) → <code>/content/social/</code></li>
+    <li><strong>Weekly newsletter draft</strong> (Thursdays only) → <code>/content/newsletter/</code></li>
+  </ul>
+
+  <h3>Setup Steps</h3>
+  <ol>
+    <li>Open <code>claude-files/agent-2-content-engine/CLAUDE.md</code></li>
+    <li>Fill in your 5 content pillars, target audience, and brand voice</li>
+    <li>Connect Notion (optional): <code>python scripts/agent2_notion_setup.py</code></li>
+    <li>Run: <code>python scripts/agent2_content_engine.py</code></li>
+  </ol>
+
+  <h3>Schedule Daily at 6 AM</h3>
+<pre><code>0 6 * * * /path/to/venv/bin/python /path/to/agent2_content_engine.py</code></pre>
+
+  <!-- AGENT 3 -->
+  <div class="agent-header">
+    <div class="agent-number">AGENT 03 / 06</div>
+    <h2>The Market Scout</h2>
+    <p style="color:#A0C4E8; margin:0 0 12px;">Monitors competitors, tracks trends, and delivers a weekly intelligence report.</p>
+    <div class="agent-meta">
+      <div class="agent-meta-item">⏱ <strong>Deploy time:</strong> 1 hour</div>
+      <div class="agent-meta-item">💰 <strong>ROI:</strong> Replaces $500/month research assistant</div>
+      <div class="agent-meta-item">💵 <strong>Monthly cost:</strong> ~$3</div>
+    </div>
+  </div>
+
+  <h3>Setup Steps</h3>
+  <ol>
+    <li>Open <code>claude-files/agent-3-market-scout/CLAUDE.md</code></li>
+    <li>Add up to 10 competitor URLs to <code>COMPETITORS</code> list</li>
+    <li>Add your target keywords to <code>KEYWORDS</code> list</li>
+    <li>Add 5–10 industry RSS feeds</li>
+    <li>Run: <code>python scripts/agent3_market_scout.py</code></li>
+  </ol>
+
+  <h3>Schedule Weekly Report (Monday 7 AM)</h3>
+<pre><code>0 7 * * 1 /path/to/venv/bin/python /path/to/agent3_market_scout.py --report</code></pre>
+
+  <!-- AGENT 4 -->
+  <div class="agent-header page-break">
+    <div class="agent-number">AGENT 04 / 06</div>
+    <h2>The Lead Nurture Bot</h2>
+    <p style="color:#A0C4E8; margin:0 0 12px;">Runs a 21-day personalized follow-up sequence for every new lead — automatically.</p>
+    <div class="agent-meta">
+      <div class="agent-meta-item">⏱ <strong>Deploy time:</strong> 2 hours</div>
+      <div class="agent-meta-item">💰 <strong>ROI:</strong> Increases conversion 20–40%</div>
+      <div class="agent-meta-item">💵 <strong>Monthly cost:</strong> ~$3</div>
+    </div>
+  </div>
+
+  <h3>The 21-Day Sequence</h3>
+  <table>
+    <tr><th>Day</th><th>Email</th><th>Goal</th></tr>
+    <tr><td>Day 1</td><td>Welcome + free resource</td><td>Build trust</td></tr>
+    <tr><td>Day 3</td><td>Case study</td><td>Show proof</td></tr>
+    <tr><td>Day 7</td><td>Objection handler</td><td>Remove barriers</td></tr>
+    <tr><td>Day 14</td><td>Limited offer</td><td>Create urgency</td></tr>
+    <tr><td>Day 21</td><td>Breakup email</td><td>Re-engagement</td></tr>
+  </table>
+
+  <h3>Setup Steps</h3>
+  <ol>
+    <li>Run <code>python scripts/agent4_sheets_setup.py</code> to create leads tracking spreadsheet</li>
+    <li>Open <code>claude-files/agent-4-lead-nurture/CLAUDE.md</code> and add your offer details</li>
+    <li>Add success stories and case studies to the CLAUDE.md</li>
+    <li>Run: <code>python scripts/agent4_lead_nurture.py</code></li>
+  </ol>
+
+  <h3>Schedule (runs every morning 8 AM)</h3>
+<pre><code>0 8 * * * /path/to/venv/bin/python /path/to/agent4_lead_nurture.py</code></pre>
+
+  <!-- AGENT 5 -->
+  <div class="agent-header">
+    <div class="agent-number">AGENT 05 / 06</div>
+    <h2>The Code Monkey</h2>
+    <p style="color:#A0C4E8; margin:0 0 12px;">Describe what you want automated in plain English — it writes, tests, and documents the Python script.</p>
+    <div class="agent-meta">
+      <div class="agent-meta-item">⏱ <strong>Deploy time:</strong> 30 minutes</div>
+      <div class="agent-meta-item">💰 <strong>ROI:</strong> Saves 5–10 hours/week</div>
+      <div class="agent-meta-item">💵 <strong>Monthly cost:</strong> ~$2</div>
+    </div>
+  </div>
+
+  <h3>Example Prompts</h3>
+<pre><code>> What do you need automated?
+"Export my Shopify orders to Google Sheets daily"
+"Resize and watermark 500 product images"
+"Send WhatsApp messages to my customer list via Twilio"
+"Generate PDF invoices from my Airtable data"</code></pre>
+
+  <h3>Run (on-demand, interactive)</h3>
+<pre><code>python scripts/agent5_code_monkey.py</code></pre>
+
+  <!-- AGENT 6 -->
+  <div class="agent-header page-break">
+    <div class="agent-number">AGENT 06 / 06</div>
+    <h2>The Analytics Oracle</h2>
+    <p style="color:#A0C4E8; margin:0 0 12px;">Aggregates all business data weekly and delivers a plain-English performance report every Friday.</p>
+    <div class="agent-meta">
+      <div class="agent-meta-item">⏱ <strong>Deploy time:</strong> 1.5 hours</div>
+      <div class="agent-meta-item">💰 <strong>ROI:</strong> Replaces $2,000/month analytics consultant</div>
+      <div class="agent-meta-item">💵 <strong>Monthly cost:</strong> ~$1</div>
+    </div>
+  </div>
+
+  <h3>Setup Steps</h3>
+  <ol>
+    <li>Run <code>python scripts/agent6_analytics_setup.py</code> to connect your data sources</li>
+    <li>Open <code>claude-files/agent-6-analytics-oracle/CLAUDE.md</code></li>
+    <li>Set your monthly KPI targets (revenue, leads, visitors, etc.)</li>
+    <li>Schedule: runs every Friday at 5 PM</li>
+  </ol>
+
+  <h3>Schedule Weekly Report (Friday 5 PM)</h3>
+<pre><code>0 17 * * 5 /path/to/venv/bin/python /path/to/agent6_analytics_oracle.py</code></pre>
+
+  <hr class="section-break">
+
+  <!-- 48-HOUR SCHEDULE -->
+  <h1 class="page-break">The 48-Hour Deployment Schedule</h1>
+
+  <h2>Hour 0–4: Foundation</h2>
+  <ul class="checklist">
+    <li>Set up Python environment and virtual env</li>
+    <li>Get Anthropic API key (console.anthropic.com)</li>
+    <li>Get Gmail API credentials (console.cloud.google.com)</li>
+    <li>Create <code>.env</code> file from <code>.env.example</code></li>
+    <li>Run <code>pip install -r requirements.txt</code></li>
+    <li>Test connection: <code>python test_connection.py</code></li>
+  </ul>
+
+  <h2>Hour 4–8: Deploy Agent 1 (Inbox Guardian)</h2>
+  <ul class="checklist">
+    <li>Run Gmail OAuth setup: <code>python agent1_setup.py</code></li>
+    <li>Customize CLAUDE.md with your email templates and VIP list</li>
+    <li>Run first test scan (dry-run mode)</li>
+    <li>Review categorization quality</li>
+    <li>Add to crontab (every 15 min)</li>
+  </ul>
+
+  <h2>Hour 8–12: Deploy Agent 2 (Content Engine)</h2>
+  <ul class="checklist">
+    <li>Define 5 content pillars in CLAUDE.md</li>
+    <li>Set brand voice and target audience</li>
+    <li>Generate first batch of content</li>
+    <li>Review output quality — adjust if needed</li>
+    <li>Schedule daily 6 AM run</li>
+  </ul>
+
+  <h2>Hour 12–16: Deploy Agent 3 (Market Scout)</h2>
+  <ul class="checklist">
+    <li>Add 10 competitor URLs</li>
+    <li>Add target keywords</li>
+    <li>Add industry RSS feeds</li>
+    <li>Run first market scan</li>
+    <li>Review first intelligence report</li>
+  </ul>
+
+  <h2>Hour 16–24: Sleep 🌙 (Agents Run Overnight)</h2>
+  <div class="callout success">
+    <div class="callout-icon">🎉</div>
+    <div class="callout-text">Your first 3 agents are now running while you sleep. Check results in the morning.</div>
+  </div>
+
+  <h2>Hour 24–32: Deploy Agents 4 & 5</h2>
+  <ul class="checklist">
+    <li>Set up CRM: <code>python agent4_sheets_setup.py</code></li>
+    <li>Import existing leads</li>
+    <li>Configure email sequences in CLAUDE.md</li>
+    <li>Test Lead Nurture Bot with a test lead</li>
+    <li>Run Code Monkey — generate your first automation script</li>
+  </ul>
+
+  <h2>Hour 32–48: Deploy Agent 6 + Testing</h2>
+  <ul class="checklist">
+    <li>Connect Google Analytics</li>
+    <li>Set KPI goals in CLAUDE.md</li>
+    <li>Run first analytics report</li>
+    <li>Run all 6 agents simultaneously</li>
+    <li>Review all outputs for quality</li>
+    <li>Fine-tune any CLAUDE.md files as needed</li>
+    <li>Document your setup for future reference</li>
+  </ul>
+
+  <hr class="section-break">
+
+  <!-- TROUBLESHOOTING -->
+  <h1>Troubleshooting Guide</h1>
+
+  <h2>Common Issues</h2>
+
+  <h3>"API key not found"</h3>
+<pre><code># Verify your .env file exists and has the key
+cat .env | grep ANTHROPIC
+# Should output: ANTHROPIC_API_KEY=sk-ant-...</code></pre>
+
+  <h3>"Gmail authentication failed"</h3>
+<pre><code># Delete cached token and re-authenticate
+rm gmail_token.json
+python scripts/agent1_setup.py</code></pre>
+
+  <h3>"Agent generating wrong content"</h3>
+  <p>Open the relevant CLAUDE.md and make instructions more specific. Add a <strong>"NEVER do X"</strong> section and concrete examples of desired output.</p>
+
+  <h3>"Getting rate limited"</h3>
+<pre><code># Add to any script hitting limits
+import time
+time.sleep(1)  # 1-second delay between API calls</code></pre>
+
+  <hr class="section-break">
+
+  <!-- COST SUMMARY -->
+  <h1>Monthly Cost Summary</h1>
+
+  <table>
+    <tr><th>Agent</th><th>API Calls/Day</th><th>Est. Monthly Cost</th></tr>
+    <tr><td>Inbox Guardian</td><td>~50</td><td>~$2</td></tr>
+    <tr><td>Content Engine</td><td>~20</td><td>~$5</td></tr>
+    <tr><td>Market Scout</td><td>~30</td><td>~$3</td></tr>
+    <tr><td>Lead Nurture Bot</td><td>~40</td><td>~$3</td></tr>
+    <tr><td>Code Monkey</td><td>~10</td><td>~$2</td></tr>
+    <tr><td>Analytics Oracle</td><td>~15/week</td><td>~$1</td></tr>
+    <tr><td><strong>TOTAL</strong></td><td></td><td><strong>~$16/month</strong></td></tr>
+  </table>
+
+  <hr class="section-break">
+
+  <div class="callout tip">
+    <div class="callout-icon">🚀</div>
+    <div class="callout-text">
+      <strong>You Did It!</strong>
+      You now have a fully autonomous AI business operation running 24/7 for approximately $16/month. Join our community to share results and get the latest agent updates.
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  © 2025 The AI Agent Empire &nbsp;|&nbsp; All Rights Reserved &nbsp;|&nbsp;
+  This guide is for personal use. Do not distribute or resell. &nbsp;|&nbsp;
+  Powered by Claude AI (Anthropic)
+</div>
+
+</body>
+</html>
