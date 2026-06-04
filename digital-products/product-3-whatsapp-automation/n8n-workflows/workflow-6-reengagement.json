@@ -1,0 +1,220 @@
+{
+  "name": "Workflow 6: WhatsApp Re-engagement Campaign",
+  "description": "Automatically identifies dormant customers (60+ days since last purchase) and runs a win-back sequence",
+  "version": "1.0",
+  "setup_instructions": {
+    "step_1": "Ensure your Google Sheet 'Customers' has columns: phone, name, last_purchase_date, total_purchases, reengagement_sent",
+    "step_2": "Import this workflow into n8n",
+    "step_3": "Configure your WhatsApp API and Google Sheets credentials",
+    "step_4": "Update the offer details in message nodes",
+    "step_5": "Schedule to run every Monday at 9 AM Dubai time",
+    "note": "Only customers with explicit opt-in consent should be included in this campaign"
+  },
+  "nodes": [
+    {
+      "id": "weekly_trigger",
+      "name": "Weekly Trigger (Monday 9 AM)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "position": [240, 300],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 9 * * 1"
+            }
+          ]
+        },
+        "timezone": "Asia/Dubai"
+      }
+    },
+    {
+      "id": "get_all_customers",
+      "name": "Get All Customers",
+      "type": "n8n-nodes-base.googleSheets",
+      "position": [440, 300],
+      "parameters": {
+        "operation": "getAll",
+        "sheetId": "[YOUR_CUSTOMERS_SHEET_ID]",
+        "range": "Customers!A:Z"
+      }
+    },
+    {
+      "id": "identify_dormant",
+      "name": "Identify Dormant Customers (60-90 Days)",
+      "type": "n8n-nodes-base.code",
+      "position": [640, 300],
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst today = new Date();\nconst dormantCustomers = [];\n\nfor (const item of items) {\n  const lastPurchase = new Date(item.json.last_purchase_date);\n  const daysSince = Math.floor((today - lastPurchase) / (1000 * 60 * 60 * 24));\n  \n  // Target 60-90 day dormant customers not already in reengagement\n  const alreadySent = item.json.reengagement_sent && item.json.reengagement_sent !== '';\n  \n  if (daysSince >= 60 && daysSince <= 90 && !alreadySent) {\n    dormantCustomers.push({\n      json: {\n        ...item.json,\n        days_dormant: daysSince,\n        customer_value: item.json.total_purchases || 1\n      }\n    });\n  }\n}\n\n// Sort by customer value (highest value first)\ndormantCustomers.sort((a, b) => b.json.customer_value - a.json.customer_value);\n\nconsole.log(`Found ${dormantCustomers.length} dormant customers for re-engagement`);\nreturn dormantCustomers;"
+      }
+    },
+    {
+      "id": "loop_dormant",
+      "name": "Loop Dormant Customers",
+      "type": "n8n-nodes-base.splitInBatches",
+      "position": [840, 300],
+      "parameters": {
+        "batchSize": 1
+      }
+    },
+    {
+      "id": "send_reengagement_1",
+      "name": "Send Re-engagement Message 1",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [1040, 300],
+      "parameters": {
+        "method": "POST",
+        "url": "https://waba.360dialog.io/v1/messages",
+        "headers": {
+          "D360-API-KEY": "[YOUR_360DIALOG_API_KEY]",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "to": "={{$json.phone}}",
+          "type": "text",
+          "text": {
+            "body": "Hi {{$json.name}}! Long time no see 👋\n\nIt's [YOUR NAME] from [BUSINESS NAME].\n\nWe've been thinking about you and wanted to share something special before we announce it publicly.\n\nWe just launched [NEW PRODUCT/SERVICE/OFFER] and you get first access as a valued customer.\n\nInterested? Reply YES and I'll send you the details right away! 😊\n\n[YOUR NAME]"
+          }
+        }
+      }
+    },
+    {
+      "id": "mark_reengagement_sent",
+      "name": "Mark Re-engagement as Sent",
+      "type": "n8n-nodes-base.googleSheets",
+      "position": [1240, 300],
+      "parameters": {
+        "operation": "update",
+        "sheetId": "[YOUR_CUSTOMERS_SHEET_ID]",
+        "range": "Customers!A:Z",
+        "lookupColumn": "phone",
+        "lookupValue": "={{$json.phone}}",
+        "values": {
+          "reengagement_sent": "={{$now.toISO()}}",
+          "reengagement_stage": "MESSAGE_1_SENT"
+        }
+      }
+    },
+    {
+      "id": "wait_15_days",
+      "name": "Wait 15 Days",
+      "type": "n8n-nodes-base.wait",
+      "position": [1440, 300],
+      "parameters": {
+        "resume": "timeInterval",
+        "resumeAmount": 360,
+        "resumeUnit": "hours"
+      },
+      "description": "Wait 15 days before sending the final message"
+    },
+    {
+      "id": "check_responded",
+      "name": "Check if Customer Responded",
+      "type": "n8n-nodes-base.googleSheets",
+      "position": [1640, 300],
+      "parameters": {
+        "operation": "lookup",
+        "sheetId": "[YOUR_CUSTOMERS_SHEET_ID]",
+        "range": "Customers!A:Z",
+        "lookupColumn": "phone",
+        "lookupValue": "={{$json.phone}}"
+      }
+    },
+    {
+      "id": "already_responded",
+      "name": "Already Responded/Purchased?",
+      "type": "n8n-nodes-base.if",
+      "position": [1840, 300],
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json.reengagement_stage}}",
+              "operation": "contains",
+              "value2": "CONVERTED"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "send_final_message",
+      "name": "Send Final Re-engagement Message",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [2040, 400],
+      "parameters": {
+        "method": "POST",
+        "url": "https://waba.360dialog.io/v1/messages",
+        "headers": {
+          "D360-API-KEY": "[YOUR_360DIALOG_API_KEY]",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "to": "={{$json.phone}}",
+          "type": "text",
+          "text": {
+            "body": "Hi {{$json.name}}! 😊\n\nOne final message, I promise!\n\nWe miss having you as an active customer and wanted to make it extra easy to come back.\n\n🎁 Special returning customer offer (this week only):\n[OFFER DESCRIPTION]\nNormal price: AED [PRICE]\nYour price: AED [DISCOUNTED_PRICE]\n\n[BOOKING/SHOP LINK]\n\nIf you have feedback about why you haven't been back, I'd genuinely love to hear it — just reply here.\n\nEither way, thank you for being a customer. It meant a lot to us! 🙏\n\nBest,\n[YOUR NAME]\n[BUSINESS NAME]\n\nP.S. Reply STOP if you'd prefer not to hear from us — completely understood!"
+          }
+        }
+      }
+    },
+    {
+      "id": "mark_final_sent",
+      "name": "Mark Final Message Sent",
+      "type": "n8n-nodes-base.googleSheets",
+      "position": [2240, 400],
+      "parameters": {
+        "operation": "update",
+        "sheetId": "[YOUR_CUSTOMERS_SHEET_ID]",
+        "range": "Customers!A:Z",
+        "lookupColumn": "phone",
+        "lookupValue": "={{$json.phone}}",
+        "values": {
+          "reengagement_stage": "FINAL_MESSAGE_SENT",
+          "reengagement_completed": "={{$now.toISO()}}"
+        }
+      }
+    },
+    {
+      "id": "rate_limit_delay",
+      "name": "2-Minute Delay (Rate Limiting)",
+      "type": "n8n-nodes-base.wait",
+      "position": [1040, 500],
+      "parameters": {
+        "resume": "timeInterval",
+        "resumeAmount": 2,
+        "resumeUnit": "minutes"
+      }
+    }
+  ],
+  "connections": {
+    "weekly_trigger": {"main": [["get_all_customers"]]},
+    "get_all_customers": {"main": [["identify_dormant"]]},
+    "identify_dormant": {"main": [["loop_dormant"]]},
+    "loop_dormant": {"main": [["send_reengagement_1"]]},
+    "send_reengagement_1": {"main": [["mark_reengagement_sent", "rate_limit_delay"]]},
+    "mark_reengagement_sent": {"main": [["wait_15_days"]]},
+    "wait_15_days": {"main": [["check_responded"]]},
+    "check_responded": {"main": [["already_responded"]]},
+    "already_responded": {
+      "main": [
+        [],
+        ["send_final_message"]
+      ]
+    },
+    "send_final_message": {"main": [["mark_final_sent"]]}
+  },
+  "settings": {
+    "timezone": "Asia/Dubai",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "last"
+  },
+  "notes": [
+    "COMPLIANCE: Only run this on customers who explicitly opted in to marketing messages",
+    "ALWAYS include opt-out option: 'Reply STOP to unsubscribe'",
+    "UAE PDPL: Respect opt-out requests within 24 hours",
+    "Replace all [PLACEHOLDERS] with your actual business information",
+    "Test with your own phone number first",
+    "Monitor opt-out rate — if >5%, review message frequency and content"
+  ]
+}
