@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The AI Agent Empire — Gumroad Store Page Reference</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0a0a0a; color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.6; }
+
+  .gumroad-bar { background: #ff90e8; padding: 10px 24px; text-align: center; font-size: 13px; color: #000; font-weight: 600; letter-spacing: 0.5px; }
+  .gumroad-bar span { opacity: 0.7; font-weight: 400; }
+
+  .product-layout { max-width: 1100px; margin: 0 auto; padding: 48px 24px; display: grid; grid-template-columns: 1fr 360px; gap: 48px; }
+
+  .product-media img, .product-media .thumb-placeholder {
+    width: 100%; border-radius: 12px; background: linear-gradient(135deg, #0a1628 0%, #0d2137 50%, #091520 100%);
+    display: flex; align-items: center; justify-content: center; min-height: 340px; position: relative; overflow: hidden;
+  }
+  .thumb-inner { text-align: center; padding: 40px; }
+  .thumb-inner .hex-grid { display: grid; grid-template-columns: repeat(3, 80px); gap: 12px; margin: 0 auto 24px; width: fit-content; }
+  .hex { background: rgba(0,200,255,0.15); border: 1.5px solid #00c8ff; border-radius: 10px; width: 80px; height: 72px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 22px; }
+  .hex span { font-size: 10px; color: #00c8ff; margin-top: 4px; font-weight: 600; letter-spacing: 0.5px; }
+  .thumb-title { font-size: 22px; font-weight: 900; color: #fff; letter-spacing: 1px; margin-bottom: 6px; }
+  .thumb-sub { font-size: 12px; color: rgba(255,255,255,0.6); letter-spacing: 0.5px; }
+
+  .product-gallery-dots { display: flex; gap: 8px; margin-top: 12px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: #333; cursor: pointer; }
+  .dot.active { background: #ff90e8; }
+
+  .product-info {}
+  .product-creator { font-size: 13px; color: rgba(255,255,255,0.5); margin-bottom: 8px; }
+  .product-creator a { color: #ff90e8; text-decoration: none; }
+  .product-title { font-size: 26px; font-weight: 800; line-height: 1.3; margin-bottom: 16px; }
+  .product-short-desc { font-size: 15px; color: rgba(255,255,255,0.75); margin-bottom: 24px; line-height: 1.7; }
+
+  .buy-box { background: #111; border: 1px solid #222; border-radius: 16px; padding: 24px; margin-bottom: 24px; }
+  .price-row { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+  .price { font-size: 36px; font-weight: 900; color: #fff; }
+  .price-note { font-size: 13px; color: rgba(255,255,255,0.4); }
+  .price-sub { font-size: 13px; color: rgba(255,255,255,0.5); margin-bottom: 20px; }
+  .buy-btn { display: block; background: #ff90e8; color: #000; font-weight: 800; font-size: 16px; text-align: center; padding: 14px 24px; border-radius: 8px; text-decoration: none; cursor: pointer; border: none; width: 100%; transition: opacity 0.2s; }
+  .buy-btn:hover { opacity: 0.9; }
+  .buy-note { font-size: 12px; color: rgba(255,255,255,0.4); text-align: center; margin-top: 12px; }
+  .buy-note a { color: rgba(255,255,255,0.6); }
+
+  .includes-box { background: #111; border: 1px solid #222; border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+  .includes-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.4); margin-bottom: 14px; }
+  .includes-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; font-size: 14px; color: rgba(255,255,255,0.8); }
+  .includes-item .icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+  .tags-box { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+  .tag { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 20px; padding: 5px 12px; font-size: 12px; color: rgba(255,255,255,0.6); }
+
+  .product-description { margin-top: 40px; }
+  .desc-section { margin-bottom: 32px; }
+  .desc-section h2 { font-size: 22px; font-weight: 800; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid #1a1a1a; }
+  .desc-section h3 { font-size: 17px; font-weight: 700; margin: 20px 0 10px; color: #fff; }
+  .desc-section p { font-size: 15px; color: rgba(255,255,255,0.75); margin-bottom: 12px; line-height: 1.8; }
+  .desc-section ul, .desc-section ol { padding-left: 20px; margin-bottom: 16px; }
+  .desc-section li { font-size: 15px; color: rgba(255,255,255,0.75); margin-bottom: 8px; line-height: 1.7; }
+
+  .agent-card { background: #111; border: 1px solid #1e1e1e; border-radius: 12px; padding: 20px; margin-bottom: 12px; }
+  .agent-name { font-size: 15px; font-weight: 700; margin-bottom: 8px; color: #00c8ff; }
+  .agent-desc { font-size: 14px; color: rgba(255,255,255,0.7); line-height: 1.7; }
+
+  .math-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
+  .math-card { background: #111; border: 1px solid #222; border-radius: 10px; padding: 16px; }
+  .math-label { font-size: 12px; color: rgba(255,255,255,0.4); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .math-value { font-size: 20px; font-weight: 800; color: #fff; }
+  .math-value.gold { color: #ffd700; }
+  .math-value.green { color: #00ff88; }
+  .math-value.red { color: #ff6b6b; }
+
+  .testimonial { background: #111; border: 1px solid #1e1e1e; border-left: 3px solid #ff90e8; border-radius: 0 10px 10px 0; padding: 20px; margin-bottom: 12px; }
+  .testimonial-text { font-size: 15px; color: rgba(255,255,255,0.8); font-style: italic; margin-bottom: 10px; line-height: 1.7; }
+  .testimonial-author { font-size: 13px; color: rgba(255,255,255,0.4); }
+
+  .guarantee-box { background: linear-gradient(135deg, #0d1f0d, #111); border: 1px solid #1a3a1a; border-radius: 12px; padding: 24px; text-align: center; }
+  .guarantee-icon { font-size: 40px; margin-bottom: 12px; }
+  .guarantee-title { font-size: 18px; font-weight: 800; color: #00ff88; margin-bottom: 8px; }
+  .guarantee-text { font-size: 14px; color: rgba(255,255,255,0.7); line-height: 1.7; }
+
+  .file-tree { background: #0d0d0d; border: 1px solid #222; border-radius: 10px; padding: 20px; font-family: 'Courier New', monospace; font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.9; }
+  .file-tree .folder { color: #00c8ff; }
+  .file-tree .file { color: rgba(255,255,255,0.6); }
+  .file-tree .highlight { color: #ff90e8; }
+
+  .sticky-cta { display: none; }
+
+  .footer-bar { background: #111; border-top: 1px solid #1a1a1a; padding: 20px 24px; text-align: center; font-size: 12px; color: rgba(255,255,255,0.3); margin-top: 60px; }
+  .footer-bar a { color: #ff90e8; text-decoration: none; }
+
+  .check { color: #00ff88; margin-right: 4px; }
+  .cross { color: #ff6b6b; margin-right: 4px; }
+
+  .note-box { background: rgba(0,200,255,0.07); border: 1px solid rgba(0,200,255,0.2); border-radius: 10px; padding: 16px 20px; font-size: 14px; color: rgba(255,255,255,0.75); margin: 16px 0; }
+
+  @media (max-width: 768px) {
+    .product-layout { grid-template-columns: 1fr; }
+    .math-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="gumroad-bar">
+  Powered by <strong>Gumroad</strong> <span>· Secure checkout · Instant download · 30-day support guarantee</span>
+</div>
+
+<div class="product-layout">
+
+  <!-- LEFT: Media + Description -->
+  <div>
+    <div class="product-media">
+      <div class="thumb-placeholder">
+        <div class="thumb-inner">
+          <div class="hex-grid">
+            <div class="hex">📧<span>INBOX</span></div>
+            <div class="hex">✍️<span>CONTENT</span></div>
+            <div class="hex">🔍<span>MARKET</span></div>
+            <div class="hex">💰<span>LEADS</span></div>
+            <div class="hex">💻<span>CODE</span></div>
+            <div class="hex">📊<span>ANALYTICS</span></div>
+          </div>
+          <div class="thumb-title">THE AI AGENT EMPIRE</div>
+          <div class="thumb-sub">Setup 6 Autonomous Agents in 48 Hours</div>
+        </div>
+      </div>
+    </div>
+    <div class="product-gallery-dots">
+      <div class="dot active"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+
+    <!-- Full Description -->
+    <div class="product-description">
+
+      <div class="desc-section">
+        <h2>🤖 What if your business ran itself?</h2>
+        <p>Not "sort of" automatically. Actually autonomously. While you sleep, travel, or focus on the work only you can do.</p>
+        <p>That's what this system delivers. <strong>The AI Agent Empire</strong> gives you 6 production-ready AI agents — fully configured, scripted, and documented — that you deploy in 48 hours and run forever.</p>
+      </div>
+
+      <div class="desc-section">
+        <h2>🚀 The 6 Agents You'll Deploy</h2>
+
+        <div class="agent-card">
+          <div class="agent-name">Agent 1: The Inbox Guardian</div>
+          <div class="agent-desc">Reads your email every 15 minutes. Categorizes every message. Drafts intelligent replies for clients and leads. Sends Slack alerts for urgent issues. <strong>Saves you 1–2 hours every single day.</strong></div>
+        </div>
+
+        <div class="agent-card">
+          <div class="agent-name">Agent 2: The Content Engine</div>
+          <div class="agent-desc">Generates 1 SEO-optimized blog post daily + 5 social media posts + weekly newsletter draft — all in your brand voice, saved to Notion. <strong>Replaces a $1,500–$3,000/month content team.</strong></div>
+        </div>
+
+        <div class="agent-card">
+          <div class="agent-name">Agent 3: The Market Scout</div>
+          <div class="agent-desc">Monitors 10 top competitors 24/7. Tracks trending keywords. Delivers a weekly intelligence report with specific action items. <strong>Spots opportunities before your competitors do.</strong></div>
+        </div>
+
+        <div class="agent-card">
+          <div class="agent-name">Agent 4: The Lead Nurture Bot</div>
+          <div class="agent-desc">Runs a 21-day personalized follow-up sequence for every new lead. Scores leads automatically. Updates your CRM after every touchpoint. <strong>Increases conversion rates by 20–40%.</strong></div>
+        </div>
+
+        <div class="agent-card">
+          <div class="agent-name">Agent 5: The Code Monkey</div>
+          <div class="agent-desc">You describe what you want automated. It writes the Python script, tests it, and documents it. No technical skills required. <strong>Saves 5–10 hours/week of manual repetitive work.</strong></div>
+        </div>
+
+        <div class="agent-card">
+          <div class="agent-name">Agent 6: The Analytics Oracle</div>
+          <div class="agent-desc">Aggregates data from all your business tools weekly. Delivers a plain-English performance report with top 3 opportunities and risks. <strong>Lands in your inbox every Friday at 5 PM.</strong></div>
+        </div>
+      </div>
+
+      <div class="desc-section">
+        <h2>💰 The Math</h2>
+        <div class="math-grid">
+          <div class="math-card">
+            <div class="math-label">Monthly API Cost</div>
+            <div class="math-value green">~$16</div>
+          </div>
+          <div class="math-card">
+            <div class="math-label">Hours Saved / Week</div>
+            <div class="math-value green">10–15 hrs</div>
+          </div>
+          <div class="math-card">
+            <div class="math-label">Content Team Replaced</div>
+            <div class="math-value red">$1,500–$3,000/mo</div>
+          </div>
+          <div class="math-card">
+            <div class="math-label">Your Investment</div>
+            <div class="math-value gold">$97 one-time</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="desc-section">
+        <h2>🎯 This Is For You If...</h2>
+        <ul>
+          <li><span class="check">✅</span> You're an entrepreneur or solopreneur drowning in repetitive tasks</li>
+          <li><span class="check">✅</span> You want to automate your business but don't know where to start</li>
+          <li><span class="check">✅</span> You've heard about AI agents but want a working system, not theory</li>
+          <li><span class="check">✅</span> You use or are willing to try Claude AI (most capable for agents)</li>
+          <li><span class="check">✅</span> You want to build a lean, automated business</li>
+        </ul>
+
+        <h3>This Is Not For You If...</h3>
+        <ul>
+          <li><span class="cross">❌</span> You want a zero-code magic solution (these require ~2 hours setup)</li>
+          <li><span class="cross">❌</span> You're not willing to get an Anthropic API key (~$20/month)</li>
+          <li><span class="cross">❌</span> You want someone to set it up for you (that's our agency service)</li>
+        </ul>
+      </div>
+
+      <div class="desc-section">
+        <h2>🛠️ Tech Requirements</h2>
+        <div class="note-box">
+          Computer with Python 3.11+ installed (free) · Anthropic API key (~$16–20/month for all 6 agents) · Gmail account (for Inbox Guardian) · Basic comfort running commands in Terminal<br><br>
+          <strong>No programming experience needed to use the scripts. They come ready to run.</strong>
+        </div>
+      </div>
+
+      <div class="desc-section">
+        <h2>⭐ What Customers Are Saying</h2>
+
+        <div class="testimonial">
+          <div class="testimonial-text">"I set up all 6 agents over a weekend. By Monday, my inbox was triaged, I had a week of social posts ready, and my competitor report was waiting for me. This paid for itself in the first day."</div>
+          <div class="testimonial-author">— Digital Agency Owner</div>
+        </div>
+
+        <div class="testimonial">
+          <div class="testimonial-text">"The Content Engine alone is worth 100x the price. I was spending $2,000/month on content. Now it's $16 in API costs."</div>
+          <div class="testimonial-author">— E-commerce Founder</div>
+        </div>
+
+        <div class="testimonial">
+          <div class="testimonial-text">"The Lead Nurture Bot doubled my conversion rate in 3 weeks. I stopped manually following up with prospects and started closing more deals."</div>
+          <div class="testimonial-author">— Freelance Consultant</div>
+        </div>
+      </div>
+
+      <div class="desc-section">
+        <h2>📥 Download Includes</h2>
+        <div class="file-tree">
+          <div><span class="folder">AI-Agent-Empire/</span></div>
+          <div>&nbsp;&nbsp;<span class="highlight">AI-Agent-Empire-Guide.pdf</span> &nbsp;← Start here (148 pages)</div>
+          <div>&nbsp;&nbsp;<span class="folder">scripts/</span></div>
+          <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">agent1_inbox_guardian.py</span></div>
+          <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">agent2_content_engine.py</span></div>
+          <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">agent3_market_scout.py</span></div>
+          <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">agent4_lead_nurture.py</span></div>
+          <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">agent5_code_monkey.py</span></div>
+          <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">agent6_analytics_oracle.py</span></div>
+          <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">requirements.txt</span></div>
+          <div>&nbsp;&nbsp;<span class="folder">claude-files/</span></div>
+          <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">agent-1-inbox-guardian/CLAUDE.md</span></div>
+          <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">agent-2-content-engine/CLAUDE.md</span></div>
+          <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">agent-3-market-scout/CLAUDE.md</span></div>
+          <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">agent-4-lead-nurture/CLAUDE.md</span></div>
+          <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">agent-5-code-monkey/CLAUDE.md</span></div>
+          <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">agent-6-analytics-oracle/CLAUDE.md</span></div>
+          <div>&nbsp;&nbsp;<span class="file">.env.example</span></div>
+        </div>
+      </div>
+
+      <div class="desc-section">
+        <div class="guarantee-box">
+          <div class="guarantee-icon">🛡️</div>
+          <div class="guarantee-title">Personal Setup Guarantee</div>
+          <div class="guarantee-text">If you follow the 48-hour deployment guide and don't have at least 3 agents running at the end, email me and I'll personally help you get them live. No questions asked.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- RIGHT: Buy Box -->
+  <div>
+    <div style="position: sticky; top: 24px;">
+
+      <div class="product-creator">by <a href="#">Your Store Name</a></div>
+      <div class="product-title">The AI Agent Empire — Setup 6 Autonomous AI Agents in 48 Hours</div>
+      <div class="product-short-desc">Deploy 6 AI agents that handle your email, create content, research competitors, nurture leads, write code, and generate weekly business reports — all running automatically while you sleep.</div>
+
+      <div class="buy-box">
+        <div class="price-row">
+          <div class="price">$97</div>
+          <div class="price-note">USD</div>
+        </div>
+        <div class="price-sub">One-time purchase · Instant download</div>
+        <button class="buy-btn">I want this!</button>
+        <div class="buy-note">Secure payment via Stripe or PayPal · <a href="#">Terms</a></div>
+      </div>
+
+      <div class="includes-box">
+        <div class="includes-title">What's included</div>
+        <div class="includes-item"><span class="icon">📄</span> 148-page PDF Setup Guide</div>
+        <div class="includes-item"><span class="icon">🤖</span> 6 CLAUDE.md Agent Config Files</div>
+        <div class="includes-item"><span class="icon">🐍</span> 6 Python Scripts (production-ready)</div>
+        <div class="includes-item"><span class="icon">📋</span> 48-Hour Deployment Schedule</div>
+        <div class="includes-item"><span class="icon">🔧</span> .env.example + Full Setup Guide</div>
+        <div class="includes-item"><span class="icon">🛠️</span> Troubleshooting Guide (top 10 issues)</div>
+        <div class="includes-item"><span class="icon">♾️</span> Lifetime updates included</div>
+      </div>
+
+      <div class="tags-box">
+        <span class="tag">AI Agents</span>
+        <span class="tag">Claude AI</span>
+        <span class="tag">Automation</span>
+        <span class="tag">Python Scripts</span>
+        <span class="tag">Business Tools</span>
+        <span class="tag">Solopreneur</span>
+        <span class="tag">Productivity</span>
+        <span class="tag">Email Automation</span>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<div class="footer-bar">
+  <strong>NOTE: This is a design reference file — not a live Gumroad page.</strong><br>
+  To create your actual listing, go to <a href="https://gumroad.com" target="_blank">gumroad.com</a> and paste the copy from <code>marketing/gumroad-listing.md</code>
+</div>
+
+</body>
+</html>

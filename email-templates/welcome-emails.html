@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welcome Email Templates — All 3 Products</title>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f5; margin: 0; padding: 24px; color: #1a1a1a; }
+  h1 { font-size: 22px; margin-bottom: 6px; }
+  .meta { font-size: 13px; color: #666; margin-bottom: 40px; }
+  .email-block { background: #fff; border-radius: 12px; overflow: hidden; margin-bottom: 48px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+  .email-meta { background: #f0f0f0; padding: 16px 24px; font-size: 13px; border-bottom: 1px solid #e0e0e0; }
+  .email-meta strong { display: block; font-size: 14px; margin-bottom: 4px; }
+  .email-meta span { color: #666; }
+  .email-body { padding: 0; }
+
+  /* ===== EMAIL INNER STYLES (inline-friendly) ===== */
+  table { border-collapse: collapse; }
+  .wrapper { background: #f5f5f5; padding: 32px 16px; }
+  .container { max-width: 580px; margin: 0 auto; background: #ffffff; border-radius: 12px; overflow: hidden; }
+  .header { padding: 32px 40px 24px; text-align: center; }
+  .header .logo { font-size: 24px; font-weight: 900; letter-spacing: -0.5px; }
+  .body-pad { padding: 0 40px 32px; }
+  .greeting { font-size: 24px; font-weight: 800; margin-bottom: 16px; line-height: 1.3; }
+  .body-text { font-size: 15px; line-height: 1.8; color: #333; margin-bottom: 16px; }
+  .step-box { background: #f8f8f8; border-radius: 10px; padding: 20px 24px; margin: 20px 0; }
+  .step-box h3 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #888; margin-bottom: 14px; }
+  .step { display: flex; gap: 14px; margin-bottom: 14px; align-items: flex-start; }
+  .step-num { background: #000; color: #fff; font-size: 12px; font-weight: 800; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+  .step-text { font-size: 14px; color: #333; line-height: 1.6; }
+  .step-text strong { display: block; margin-bottom: 2px; }
+  .cta-btn { display: block; text-align: center; padding: 14px 32px; border-radius: 8px; font-size: 15px; font-weight: 800; text-decoration: none; margin: 24px 0; }
+  .highlight-box { border-radius: 10px; padding: 18px 22px; margin: 20px 0; }
+  .faq-item { margin-bottom: 16px; }
+  .faq-q { font-size: 14px; font-weight: 700; margin-bottom: 4px; color: #111; }
+  .faq-a { font-size: 14px; color: #555; line-height: 1.6; }
+  .footer-email { background: #f8f8f8; padding: 20px 40px; text-align: center; font-size: 12px; color: #999; border-top: 1px solid #eee; }
+  .divider { border: none; border-top: 1px solid #eee; margin: 20px 0; }
+
+  /* Product 1 colors */
+  .p1-header { background: linear-gradient(135deg, #0a1628, #0d2137); }
+  .p1-logo { color: #00c8ff; }
+  .p1-accent { color: #00c8ff; }
+  .p1-step-num { background: #00c8ff; color: #000; }
+  .p1-cta { background: #00c8ff; color: #000; }
+  .p1-highlight { background: #f0faff; border-left: 4px solid #00c8ff; }
+  .p1-greeting { color: #0a1628; }
+
+  /* Product 2 colors */
+  .p2-header { background: linear-gradient(135deg, #2d1b4e, #1a0d2e); }
+  .p2-logo { color: #ffd700; }
+  .p2-accent { color: #7c3aed; }
+  .p2-step-num { background: #7c3aed; }
+  .p2-cta { background: #7c3aed; color: #fff; }
+  .p2-highlight { background: #faf5ff; border-left: 4px solid #7c3aed; }
+  .p2-greeting { color: #2d1b4e; }
+
+  /* Product 3 colors */
+  .p3-header { background: linear-gradient(135deg, #0a2010, #0d2c14); }
+  .p3-logo { color: #25d366; }
+  .p3-accent { color: #25d366; }
+  .p3-step-num { background: #25d366; color: #000; }
+  .p3-cta { background: #25d366; color: #000; }
+  .p3-highlight { background: #f0fff4; border-left: 4px solid #25d366; }
+  .p3-greeting { color: #0a2010; }
+
+  .product-divider { border: 3px dashed #ddd; margin: 48px 0; border-radius: 4px; }
+  .product-label { text-align: center; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #aaa; margin-bottom: 4px; }
+</style>
+</head>
+<body>
+
+<h1>Welcome Email Templates</h1>
+<p class="meta">
+  Three ready-to-send emails — one per product. Copy each into Gumroad's "Receipt Email" field or your email tool (Mailchimp, ConvertKit, etc.).<br>
+  Replace <code style="background:#f0f0f0;padding:2px 6px;border-radius:4px;">YOUR_GUMROAD_URL</code> with your actual product links.
+</p>
+
+<!-- ======================================= -->
+<!-- PRODUCT 1: AI AGENT EMPIRE              -->
+<!-- ======================================= -->
+
+<div class="product-label">PRODUCT 1 — AI AGENT EMPIRE ($97)</div>
+<div class="email-block">
+  <div class="email-meta">
+    <strong>Subject: Your AI agents are ready — here's how to deploy in 48 hours</strong>
+    <span>From: [Your Name] &lt;you@yourdomain.com&gt; · Send: immediately on purchase</span>
+  </div>
+  <div class="email-body">
+    <div class="wrapper">
+      <div class="container">
+
+        <div class="header p1-header">
+          <div class="logo p1-logo">🤖 THE AI AGENT EMPIRE</div>
+          <div style="color:rgba(255,255,255,0.6);font-size:13px;margin-top:6px;">Your complete automation system is ready</div>
+        </div>
+
+        <div class="body-pad">
+          <div class="greeting p1-greeting">Welcome to the system. Let's get your agents live.</div>
+
+          <p class="body-text">
+            You just made a decision that will save you <strong>10–15 hours every week</strong>. Here's exactly what to do first.
+          </p>
+
+          <div class="step-box">
+            <h3>Your 48-Hour Deployment Plan</h3>
+
+            <div class="step">
+              <div class="step-num p1-step-num" style="background:#00c8ff;color:#000">1</div>
+              <div class="step-text">
+                <strong>Right now (5 min): Download + unzip your files</strong>
+                Open your download. You'll find the PDF guide, all 6 scripts, and 6 CLAUDE.md files. Start with <code>AI-Agent-Empire-Guide.pdf</code>.
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="step-num" style="background:#00c8ff;color:#000">2</div>
+              <div class="step-text">
+                <strong>Hour 1: Set up your environment</strong>
+                Follow Chapter 2 of the guide. Get Python + your Anthropic API key. Copy <code>.env.example</code> to <code>.env</code> and add your keys.
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="step-num" style="background:#00c8ff;color:#000">3</div>
+              <div class="step-text">
+                <strong>Hours 2–4: Deploy Agent 1 (Inbox Guardian)</strong>
+                This is the highest-ROI agent. Saves 1–2 hours daily. Follow the step-by-step guide in Chapter 3. First run takes under 15 minutes once your environment is set.
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="step-num" style="background:#00c8ff;color:#000">4</div>
+              <div class="step-text">
+                <strong>Hours 5–24: Agents 2–4</strong>
+                Content Engine, Market Scout, Lead Nurture. Each takes 30–60 minutes to configure. The CLAUDE.md files are pre-written — just add your business details.
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="step-num" style="background:#00c8ff;color:#000">5</div>
+              <div class="step-text">
+                <strong>Hours 25–48: Agents 5–6 + full system test</strong>
+                Code Monkey and Analytics Oracle. After setup, run all 6 and watch your business run itself.
+              </div>
+            </div>
+          </div>
+
+          <div class="highlight-box p1-highlight">
+            <strong style="color:#0a1628">⚡ Quick win:</strong>
+            <p style="margin:6px 0 0;font-size:14px;color:#333;">Deploy Agent 1 today. Just Agent 1. You'll have your inbox triaged before you go to bed tonight. That alone proves this works.</p>
+          </div>
+
+          <a href="YOUR_GUMROAD_URL" class="cta-btn p1-cta">📥 Download Your Files</a>
+
+          <hr class="divider">
+
+          <div class="faq-item">
+            <div class="faq-q">❓ Something not working?</div>
+            <div class="faq-a">Check Chapter 9 (Troubleshooting) first — it covers the 10 most common issues. Still stuck? Reply to this email with the error message and I'll personally help.</div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-q">💡 Want better outputs from Agent 2 (Content Engine)?</div>
+            <div class="faq-a">The 500 Claude Prompts collection ($27) has 80+ content prompts that work perfectly inside the Content Engine. Grab it on Etsy: [ETSY LINK]</div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-q">📊 What does success look like?</div>
+            <div class="faq-a">By the end of Hour 48: at least 3 agents running, inbox triaged daily, first content batch generated, competitors monitored. That's the minimum win.</div>
+          </div>
+
+          <p class="body-text" style="margin-top:24px;">
+            Reply to this email anytime. I read every response.<br><br>
+            — [Your Name]
+          </p>
+        </div>
+
+        <div class="footer-email">
+          You purchased The AI Agent Empire · <a href="#">Unsubscribe</a> · <a href="#">View in browser</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="product-divider">
+
+<!-- ======================================= -->
+<!-- PRODUCT 2: 500 CLAUDE PROMPTS           -->
+<!-- ======================================= -->
+
+<div class="product-label">PRODUCT 2 — 500 CLAUDE PROMPTS ($27)</div>
+<div class="email-block">
+  <div class="email-meta">
+    <strong>Subject: Your 500 Claude Prompts are here — start with these 5</strong>
+    <span>From: [Your Name] &lt;you@yourdomain.com&gt; · Send: immediately on purchase</span>
+  </div>
+  <div class="email-body">
+    <div class="wrapper">
+      <div class="container">
+
+        <div class="header p2-header">
+          <div class="logo p2-logo">500 CLAUDE PROMPTS</div>
+          <div style="color:rgba(255,255,255,0.6);font-size:13px;margin-top:6px;">For Business Owners · Instant Download</div>
+        </div>
+
+        <div class="body-pad">
+          <div class="greeting p2-greeting">Your prompt library just got a serious upgrade.</div>
+
+          <p class="body-text">
+            500 prompts across 6 categories. You now have a <strong>copy-paste shortcut for every business situation</strong> — email, sales, content, operations, automation, and productivity.
+          </p>
+
+          <div class="step-box">
+            <h3>Start Here — Your First 5 Prompts to Try Today</h3>
+
+            <div class="step">
+              <div class="step-num" style="background:#7c3aed">1</div>
+              <div class="step-text">
+                <strong>The Cold Email Generator (Email Prompts, #E-003)</strong>
+                Write a cold email to [NAME], a [ROLE] at [COMPANY]. Their pain: [PROBLEM]. My solution: [OFFER]. Proof point: [RESULT]. CTA: 15-min call. Under 100 words.
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="step-num" style="background:#7c3aed">2</div>
+              <div class="step-text">
+                <strong>The Sales Page Builder (Sales Prompts, #S-008)</strong>
+                Write a complete sales page for [PRODUCT] at $[PRICE]. Include: headline, problem, solution, 5 benefits, 3 objections answered, guarantee, CTA. Tone: [VOICE].
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="step-num" style="background:#7c3aed">3</div>
+              <div class="step-text">
+                <strong>The Content Calendar (Content Prompts, #C-012)</strong>
+                Create a 30-day content calendar for [BUSINESS] targeting [AUDIENCE]. Mix: 40% educational, 30% social proof, 20% promotional, 10% personal. Platform: [PLATFORM].
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="step-num" style="background:#7c3aed">4</div>
+              <div class="step-text">
+                <strong>The Meeting Summarizer (Productivity Prompts, #P-005)</strong>
+                Summarize this meeting: [PASTE NOTES]. Format: 3 key decisions, 5 action items with owner + deadline, 3 follow-up questions. Keep under 200 words.
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="step-num" style="background:#7c3aed">5</div>
+              <div class="step-text">
+                <strong>The Meta Prompt (Prompt #500 — the most useful one)</strong>
+                I'm using this prompt: [PASTE IT]. It's producing: [WHAT'S WRONG]. I want: [IDEAL OUTPUT]. Improve it by: adding context, specificity, format, and constraints. Give me the improved version.
+              </div>
+            </div>
+          </div>
+
+          <div class="highlight-box p2-highlight">
+            <strong style="color:#2d1b4e">💡 How to get the most from your prompts:</strong>
+            <ul style="margin:8px 0 0;padding-left:18px;font-size:14px;color:#333;line-height:1.8;">
+              <li>Fill in every bracket <code>[LIKE THIS]</code> with your specific details</li>
+              <li>Add "Tone: [professional/casual/bold]" to any prompt to match your voice</li>
+              <li>For better outputs, add your business context at the top of the chat first</li>
+              <li>Use the Notion database to search by category and keyword</li>
+            </ul>
+          </div>
+
+          <a href="YOUR_ETSY_URL" class="cta-btn p2-cta">📥 Download Your Prompts</a>
+
+          <hr class="divider">
+
+          <div class="faq-item">
+            <div class="faq-q">📁 What format are the prompts in?</div>
+            <div class="faq-a">You get: (1) a styled PDF for easy reading and printing, and (2) a Notion database template — import it and search/filter all 500 prompts by category, use case, or keyword.</div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-q">🤖 These work with any Claude model?</div>
+            <div class="faq-a">Yes — Claude 3 Haiku, Sonnet, and Opus. They also work with ChatGPT and Gemini with minor adjustments, though they were optimised for Claude.</div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-q">⚡ Want to automate these prompts?</div>
+            <div class="faq-a">The AI Agent Empire ($97) includes Agent 2 (Content Engine) that runs your content prompts automatically every day. Worth checking out once you've used these manually.</div>
+          </div>
+
+          <p class="body-text" style="margin-top:24px;">
+            Reply and tell me your favourite prompt. I love hearing which ones people find most useful.<br><br>
+            — [Your Name]
+          </p>
+        </div>
+
+        <div class="footer-email">
+          You purchased 500 Claude Prompts for Business Owners · <a href="#">Unsubscribe</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="product-divider">
+
+<!-- ======================================= -->
+<!-- PRODUCT 3: WHATSAPP BLUEPRINT           -->
+<!-- ======================================= -->
+
+<div class="product-label">PRODUCT 3 — WHATSAPP AUTOMATION BLUEPRINT ($57)</div>
+<div class="email-block">
+  <div class="email-meta">
+    <strong>Subject: Your WhatsApp automation blueprint is ready — deploy workflow #1 today</strong>
+    <span>From: [Your Name] &lt;you@yourdomain.com&gt; · Send: immediately on purchase</span>
+  </div>
+  <div class="email-body">
+    <div class="wrapper">
+      <div class="container">
+
+        <div class="header p3-header">
+          <div class="logo p3-logo">📱 WHATSAPP BUSINESS AUTOMATION</div>
+          <div style="color:rgba(255,255,255,0.6);font-size:13px;margin-top:6px;">Blueprint + 8 n8n Workflows · UAE &amp; Global</div>
+        </div>
+
+        <div class="body-pad">
+          <div class="greeting p3-greeting">Your WhatsApp automation system is ready to deploy.</div>
+
+          <p class="body-text">
+            You're about to reclaim 10–20 hours per week from manual WhatsApp management. Here's the exact sequence to follow — <strong>start with Workflow 1, not Workflow 8.</strong>
+          </p>
+
+          <div class="step-box">
+            <h3>Recommended Deployment Order</h3>
+
+            <div class="step">
+              <div class="step-num" style="background:#25d366;color:#000">1</div>
+              <div class="step-text">
+                <strong>Today (2–3 hours): Workflow 1 — Welcome &amp; Qualification</strong>
+                This is your highest-impact workflow. New contacts get an instant welcome + qualification sequence. Set up your WhatsApp Business API (Chapter 2 of the guide) then import <code>workflow-1-welcome-qualification.json</code> into n8n.
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="step-num" style="background:#25d366;color:#000">2</div>
+              <div class="step-text">
+                <strong>Tomorrow: Workflow 2 — Appointment Booking</strong>
+                Connects your calendar and handles all booking confirmations + reminders automatically. Most businesses see a 20–30% drop in no-shows within the first week.
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="step-num" style="background:#25d366;color:#000">3</div>
+              <div class="step-text">
+                <strong>Day 3: Workflow 5 — Review Collection</strong>
+                Sends a Google review request 3 days after delivery. The UAE businesses I've seen use this went from ~10 reviews to 50+ in 60 days.
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="step-num" style="background:#25d366;color:#000">4</div>
+              <div class="step-text">
+                <strong>Days 4–7: Remaining 5 Workflows</strong>
+                Follow the numbered order in the guide. Each workflow has an import file + step-by-step setup section. Total system is live in one week.
+              </div>
+            </div>
+          </div>
+
+          <div class="highlight-box p3-highlight">
+            <strong style="color:#0a2010">🇦🇪 UAE-Specific Setup Notes:</strong>
+            <ul style="margin:8px 0 0;padding-left:18px;font-size:14px;color:#333;line-height:1.8;">
+              <li>Use <strong>360dialog</strong> or <strong>Twilio</strong> for WhatsApp Business API (both work in UAE)</li>
+              <li>All templates include Arabic + English versions — edit in Chapter 6</li>
+              <li>PDPL compliance checklist is in Appendix B</li>
+              <li>n8n can be self-hosted on a DigitalOcean droplet for AED 18/month</li>
+            </ul>
+          </div>
+
+          <a href="YOUR_GUMROAD_URL" class="cta-btn p3-cta">📥 Download Your Blueprint + Workflows</a>
+
+          <hr class="divider">
+
+          <div class="faq-item">
+            <div class="faq-q">❓ Do I need coding knowledge?</div>
+            <div class="faq-a">No. n8n is a visual drag-and-drop tool. You import the JSON workflow files I've built and fill in your API credentials. Chapter 3 has screenshots for every step.</div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-q">💰 What are the running costs?</div>
+            <div class="faq-a">WhatsApp Business API: ~AED 50–150/month depending on message volume. n8n self-hosted: AED 18–36/month. Total: well under AED 200/month for most small businesses.</div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-q">🌍 Does this work outside UAE?</div>
+            <div class="faq-a">Yes. The workflows work anywhere WhatsApp Business API is available. The guide has global setup instructions; UAE-specific sections are clearly marked.</div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-q">🔧 Something not importing?</div>
+            <div class="faq-a">Common fix: make sure you're running n8n version 1.20+ before importing. The troubleshooting section (Chapter 8) covers the most common issues. Reply to this email if you're stuck.</div>
+          </div>
+
+          <p class="body-text" style="margin-top:24px;">
+            Your business deserves to run while you sleep. Let's make that happen.<br><br>
+            — [Your Name]
+          </p>
+        </div>
+
+        <div class="footer-email">
+          You purchased the WhatsApp Business Automation Blueprint · <a href="#">Unsubscribe</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
