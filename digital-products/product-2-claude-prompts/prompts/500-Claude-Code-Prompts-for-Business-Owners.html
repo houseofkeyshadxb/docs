@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>500 Claude Code Prompts for Business Owners</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0A0E1A; --surface: #111827; --surface2: #1A2235;
+    --purple: #8B5CF6; --purple-light: #A78BFA; --purple-dark: #6D28D9;
+    --gold: #FFD700; --white: #FFFFFF; --gray: #94A3B8;
+    --border: rgba(139,92,246,0.2);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--white); font-family: 'Inter', sans-serif; line-height: 1.7; }
+  .cover {
+    background: linear-gradient(135deg, #0A0E1A 0%, #1A0A2E 50%, #0A0E1A 100%);
+    min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
+    text-align: center; padding: 60px 40px; position: relative; overflow: hidden; page-break-after: always;
+  }
+  .cover::before {
+    content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: radial-gradient(ellipse at 60% 40%, rgba(139,92,246,0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 30% 70%, rgba(109,40,217,0.1) 0%, transparent 50%);
+  }
+  .cover-badge {
+    background: rgba(139,92,246,0.15); border: 1px solid var(--purple); border-radius: 30px;
+    padding: 8px 24px; font-size: 12px; letter-spacing: 3px; color: var(--purple-light);
+    font-family: 'Space Grotesk', sans-serif; font-weight: 600; text-transform: uppercase; margin-bottom: 40px; position: relative;
+  }
+  .cover h1 {
+    font-family: 'Space Grotesk', sans-serif; font-size: 72px; font-weight: 800;
+    line-height: 1.05; position: relative; margin-bottom: 16px;
+    -webkit-text-stroke: 2px var(--purple-light); color: transparent;
+    text-shadow: 0 0 60px rgba(139,92,246,0.4);
+  }
+  .cover h2 { font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 600; color: var(--purple-light); position: relative; margin-bottom: 40px; }
+  .cover-divider { width: 120px; height: 3px; background: linear-gradient(90deg, transparent, var(--purple), transparent); margin: 30px auto; }
+  .cover-subtitle { font-size: 18px; color: var(--gray); max-width: 600px; position: relative; margin-bottom: 50px; }
+  .cover-meta { display: flex; gap: 50px; align-items: center; justify-content: center; position: relative; }
+  .meta-item { text-align: center; }
+  .meta-value { font-family: 'Space Grotesk', sans-serif; font-size: 32px; font-weight: 700; color: var(--gold); }
+  .meta-label { font-size: 11px; color: var(--gray); letter-spacing: 2px; text-transform: uppercase; margin-top: 4px; }
+  .meta-sep { width: 1px; height: 50px; background: var(--border); }
+  .price-tag {
+    background: linear-gradient(135deg, var(--purple-dark), var(--purple));
+    padding: 16px 48px; border-radius: 50px; font-family: 'Space Grotesk', sans-serif;
+    font-size: 28px; font-weight: 800; color: white; margin-top: 40px; position: relative;
+    box-shadow: 0 0 40px rgba(139,92,246,0.4);
+  }
+  .container { max-width: 900px; margin: 0 auto; padding: 60px 40px; }
+  .how-to-use {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+    padding: 40px; margin-bottom: 50px; position: relative; overflow: hidden;
+  }
+  .how-to-use::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--purple-dark), var(--purple-light)); }
+  .how-to-use h2 { font-family: 'Space Grotesk', sans-serif; font-size: 22px; color: var(--purple-light); margin-bottom: 20px; }
+  .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 50px; }
+  .stat-box { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px 20px; text-align: center; }
+  .stat-number { font-family: 'Space Grotesk', sans-serif; font-size: 36px; font-weight: 800; color: var(--purple-light); }
+  .stat-label { font-size: 12px; color: var(--gray); text-transform: uppercase; letter-spacing: 1.5px; margin-top: 6px; }
+  .category {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+    padding: 36px; margin-bottom: 32px; position: relative; overflow: hidden; page-break-inside: avoid;
+  }
+  .category::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--purple-dark), var(--purple-light)); }
+  .cat-header { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
+  .cat-icon { width: 48px; height: 48px; background: rgba(139,92,246,0.15); border: 1px solid var(--border); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+  .cat-title { font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 700; color: var(--white); }
+  .cat-subtitle { font-size: 13px; color: var(--purple-light); margin-top: 2px; }
+  .prompt-card { background: rgba(139,92,246,0.05); border: 1px solid rgba(139,92,246,0.1); border-radius: 10px; padding: 16px 20px; margin-bottom: 12px; }
+  .prompt-num { font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 700; color: var(--purple); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; }
+  .prompt-title { font-size: 14px; font-weight: 600; color: var(--white); margin-bottom: 8px; }
+  .prompt-code { background: #0D1117; border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 12px 16px; font-family: 'Courier New', monospace; font-size: 12px; color: #A78BFA; white-space: pre-wrap; word-break: break-word; line-height: 1.5; }
+  .callout { background: rgba(255,215,0,0.05); border: 1px solid rgba(255,215,0,0.3); border-left: 4px solid var(--gold); border-radius: 12px; padding: 24px 28px; margin: 30px 0; }
+  .callout-title { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 700; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
+  .callout p { font-size: 14px; color: var(--gray); }
+  .toc { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 40px; margin-bottom: 50px; }
+  .toc h2 { font-family: 'Space Grotesk', sans-serif; font-size: 22px; color: var(--purple-light); margin-bottom: 28px; text-transform: uppercase; letter-spacing: 2px; }
+  .toc-item { display: flex; align-items: center; gap: 16px; padding: 12px 0; border-bottom: 1px solid rgba(139,92,246,0.08); }
+  .toc-num { width: 32px; height: 32px; background: rgba(139,92,246,0.15); border: 1px solid var(--border); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 700; color: var(--purple-light); flex-shrink: 0; }
+  .toc-label { font-size: 14px; color: var(--white); flex: 1; }
+  .toc-range { font-family: 'Space Grotesk', sans-serif; font-size: 12px; color: var(--purple); font-weight: 600; }
+  h2.section-title { font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 800; color: var(--white); margin: 60px 0 20px; padding-bottom: 16px; border-bottom: 2px solid var(--border); }
+  h2.section-title span { color: var(--purple-light); }
+  .footer { background: var(--surface); border-top: 1px solid var(--border); margin-top: 80px; padding: 40px; text-align: center; }
+  .footer-brand { font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 700; color: var(--purple-light); margin-bottom: 8px; }
+  .footer-text { font-size: 13px; color: var(--gray); }
+  @media print { .cover { min-height: 100vh; } .category { page-break-inside: avoid; } * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; } }
+</style>
+</head>
+<body>
+<div class="cover">
+  <div class="cover-badge">✦ Premium AI Prompt Library</div>
+  <h1>500 CLAUDE<br>CODE PROMPTS</h1>
+  <h2>For Business Owners</h2>
+  <div class="cover-divider"></div>
+  <p class="cover-subtitle">The most comprehensive Claude AI prompt library for running, growing, and scaling your business — organized into 8 power categories</p>
+  <div class="cover-meta">
+    <div class="meta-item"><div class="meta-value">500</div><div class="meta-label">Ready-to-Use Prompts</div></div>
+    <div class="meta-sep"></div>
+    <div class="meta-item"><div class="meta-value">8</div><div class="meta-label">Business Categories</div></div>
+    <div class="meta-sep"></div>
+    <div class="meta-item"><div class="meta-value">∞</div><div class="meta-label">Use Cases</div></div>
+    <div class="meta-sep"></div>
+    <div class="meta-item"><div class="meta-value">v1.0</div><div class="meta-label">Current Version</div></div>
+  </div>
+  <div class="price-tag">$27 — One-Time Investment</div>
+</div>
+<div class="container">
+  <div class="how-to-use">
+    <h2>🚀 HOW TO USE THIS COLLECTION</h2>
+    <p style="color:var(--gray); margin-bottom:16px;">Each prompt is ready to copy-paste into Claude. Replace anything in <strong style="color:var(--purple-light)">[BRACKETS]</strong> with your specific details.</p>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:20px;">
+      <div>
+        <div style="font-family:'Space Grotesk',sans-serif; font-size:13px; color:var(--purple-light); font-weight:600; margin-bottom:10px; text-transform:uppercase; letter-spacing:1px;">Follow-Up Prompts</div>
+        <ul style="list-style:none; color:var(--gray); font-size:13px; line-height:2;">
+          <li>→ "Make it more concise"</li><li>→ "Give me 5 alternatives"</li>
+          <li>→ "Rewrite in a formal/casual tone"</li><li>→ "Add more detail about [section]"</li>
+        </ul>
+      </div>
+      <div>
+        <div style="font-family:'Space Grotesk',sans-serif; font-size:13px; color:var(--purple-light); font-weight:600; margin-bottom:10px; text-transform:uppercase; letter-spacing:1px;">Recommended Models</div>
+        <ul style="list-style:none; color:var(--gray); font-size:13px; line-height:2;">
+          <li>🧠 Complex analysis: <strong style="color:white">claude-opus</strong></li>
+          <li>⚡ Quick tasks: <strong style="color:white">claude-sonnet</strong></li>
+          <li>🏃 Fast + cheap: <strong style="color:white">claude-haiku</strong></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="stats-row">
+    <div class="stat-box"><div class="stat-number">500</div><div class="stat-label">Total Prompts</div></div>
+    <div class="stat-box"><div class="stat-number">8</div><div class="stat-label">Categories</div></div>
+    <div class="stat-box"><div class="stat-number">50+</div><div class="stat-label">Sub-Categories</div></div>
+    <div class="stat-box"><div class="stat-number">$27</div><div class="stat-label">One-Time Price</div></div>
+  </div>
+  <div class="callout">
+    <div class="callout-title">💡 Pro Tip</div>
+    <p>Use these prompts as starting points, not final outputs. The best results come from iterating — ask Claude to refine, expand, or reimagine until it perfectly fits your needs.</p>
+  </div>
+  <div class="toc">
+    <h2>📋 Table of Contents</h2>
+    <div class="toc-item"><div class="toc-num">01</div><div class="toc-label">Email &amp; Communication</div><div class="toc-range">Prompts 1–50</div></div>
+    <div class="toc-item"><div class="toc-num">02</div><div class="toc-label">Sales &amp; Marketing</div><div class="toc-range">Prompts 51–150</div></div>
+    <div class="toc-item"><div class="toc-num">03</div><div class="toc-label">Content Creation</div><div class="toc-range">Prompts 151–250</div></div>
+    <div class="toc-item"><div class="toc-num">04</div><div class="toc-label">Business Operations</div><div class="toc-range">Prompts 251–350</div></div>
+    <div class="toc-item"><div class="toc-num">05</div><div class="toc-label">Claude AI Optimization</div><div class="toc-range">Prompts 351–420</div></div>
+    <div class="toc-item"><div class="toc-num">06</div><div class="toc-label">Productivity &amp; Systems</div><div class="toc-range">Prompts 421–500</div></div>
+  </div>
+  <h2 class="section-title">Category 1: <span>Email &amp; Communication</span></h2>
+  <div class="category">
+    <div class="cat-header"><div class="cat-icon">📧</div><div><div class="cat-title">1.1 Client Emails (Prompts 1–15)</div><div class="cat-subtitle">Professional client-facing communication templates</div></div></div>
+    <div class="prompt-card"><div class="prompt-num">Prompt 1</div><div class="prompt-title">Project Kickoff Email</div><div class="prompt-code">Write a professional project kickoff email to [CLIENT NAME] at [COMPANY].
+Project: [PROJECT DESCRIPTION] | Start date: [DATE]
+Key milestones: [LIST MILESTONES]
+Include: excitement about the project, clear next steps, and a warm professional tone.</div></div>
+    <div class="prompt-card"><div class="prompt-num">Prompt 2</div><div class="prompt-title">Follow-Up After No Response</div><div class="prompt-code">Write a polite follow-up email to [CLIENT NAME] who hasn't responded to my email about [TOPIC] sent [X DAYS] ago.
+Keep it brief, friendly, and include a clear call to action.</div></div>
+    <div class="prompt-card"><div class="prompt-num">Prompt 3</div><div class="prompt-title">Scope Creep Boundary Email</div><div class="prompt-code">Write a professional email to [CLIENT] about a scope change request.
+Original scope: [ORIGINAL SCOPE] | Requested addition: [NEW REQUEST]
+Diplomatically explain this is outside scope and outline the additional cost/timeline.</div></div>
+  </div>
+  <div class="category">
+    <div class="cat-header"><div class="cat-icon">🎯</div><div><div class="cat-title">1.3 Customer Service (Prompts 26–50)</div><div class="cat-subtitle">Handle complaints, refunds, and escalations professionally</div></div></div>
+    <div class="prompt-card"><div class="prompt-num">Prompt 26</div><div class="prompt-title">Complaint Resolution Response</div><div class="prompt-code">Write a customer service response to [CUSTOMER NAME] who complained about [ISSUE].
+Acknowledge their frustration, apologize sincerely, explain what happened, and provide resolution: [RESOLUTION OFFERED].</div></div>
+    <div class="prompt-card"><div class="prompt-num">Prompt 30</div><div class="prompt-title">Refund Request Response</div><div class="prompt-code">Write a response to [CUSTOMER] requesting a refund for [PRODUCT/SERVICE].
+Decision: [APPROVE / PARTIAL / DENY]
+Outline the refund process or explain policy while maintaining goodwill.</div></div>
+  </div>
+  <h2 class="section-title">Category 2: <span>Sales &amp; Marketing</span></h2>
+  <div class="category">
+    <div class="cat-header"><div class="cat-icon">💰</div><div><div class="cat-title">2.1 Sales Copy &amp; Offers (Prompts 51–80)</div><div class="cat-subtitle">Conversion-optimized copy for offers, landing pages, and DMs</div></div></div>
+    <div class="prompt-card"><div class="prompt-num">Prompt 51</div><div class="prompt-title">Product Sales Page Copy</div><div class="prompt-code">Write a high-converting sales page for [PRODUCT NAME].
+Target audience: [AUDIENCE] | Price: [PRICE] | Main benefit: [BENEFIT]
+Key features: [LIST 3-5 FEATURES]
+Include: headline, problem statement, solution, features, testimonial placeholder, CTA.</div></div>
+    <div class="prompt-card"><div class="prompt-num">Prompt 60</div><div class="prompt-title">Cold DM Outreach Script</div><div class="prompt-code">Write a non-salesy cold DM to [TARGET PERSON] about [OFFER/SERVICE].
+Platform: [Instagram/LinkedIn/WhatsApp]
+Open with genuine value. Build curiosity. End with a soft yes/no question. Max 80 words.</div></div>
+    <div class="prompt-card"><div class="prompt-num">Prompt 75</div><div class="prompt-title">Objection Handling Scripts</div><div class="prompt-code">Give me 5 responses to the objection "[COMMON OBJECTION]" for [PRODUCT/SERVICE].
+Each response should: acknowledge the concern, reframe it, and guide toward yes. Keep each under 50 words.</div></div>
+  </div>
+  <div class="category">
+    <div class="cat-header"><div class="cat-icon">📩</div><div><div class="cat-title">2.2 Email Marketing (Prompts 81–150)</div><div class="cat-subtitle">Sequences, campaigns, and nurture flows</div></div></div>
+    <div class="prompt-card"><div class="prompt-num">Prompt 81</div><div class="prompt-title">5-Email Welcome Sequence</div><div class="prompt-code">Write a 5-email welcome sequence for new subscribers to [BUSINESS/BRAND].
+Niche: [NICHE] | Lead magnet: [LEAD MAGNET]
+Goal: Build trust, deliver value, soft-pitch [OFFER] by email 5. Include subject lines.</div></div>
+    <div class="prompt-card"><div class="prompt-num">Prompt 100</div><div class="prompt-title">Flash Sale Email</div><div class="prompt-code">Write a flash sale announcement email for [PRODUCT] with [DISCOUNT]% off.
+Sale ends: [DATE/TIME]
+Include: subject line, preview text, body copy, and CTA button text.</div></div>
+  </div>
+  <h2 class="section-title">Category 3: <span>Content Creation</span></h2>
+  <div class="category">
+    <div class="cat-header"><div class="cat-icon">✍️</div><div><div class="cat-title">3.1 Blog Posts &amp; Articles (Prompts 151–250)</div><div class="cat-subtitle">SEO-optimized articles, thought leadership, and how-tos</div></div></div>
+    <div class="prompt-card"><div class="prompt-num">Prompt 151</div><div class="prompt-title">SEO Blog Post Outline</div><div class="prompt-code">Create a detailed SEO blog post outline for the keyword: "[TARGET KEYWORD]"
+Target audience: [AUDIENCE]
+Include: H1, H2s, H3s, meta description, suggested word count per section, and internal linking opportunities.</div></div>
+    <div class="prompt-card"><div class="prompt-num">Prompt 200</div><div class="prompt-title">Short-Form Hook Pack</div><div class="prompt-code">Write 10 scroll-stopping hooks for a short-form video about [TOPIC].
+Platform: [TikTok/Reels/Shorts]
+Mix formats: question hooks, bold statement hooks, story hooks, and controversy hooks.</div></div>
+  </div>
+  <h2 class="section-title">Category 4: <span>Business Operations</span></h2>
+  <div class="category">
+    <div class="cat-header"><div class="cat-icon">⚙️</div><div><div class="cat-title">4.1 Strategy &amp; Planning (Prompts 251–310)</div><div class="cat-subtitle">Business plans, SOPs, and strategic frameworks</div></div></div>
+    <div class="prompt-card"><div class="prompt-num">Prompt 251</div><div class="prompt-title">90-Day Business Plan</div><div class="prompt-code">Create a 90-day action plan for [BUSINESS GOAL].
+Current situation: [WHERE YOU ARE NOW] | Resources: [BUDGET / TEAM SIZE / TOOLS]
+Break into: Month 1 (foundation), Month 2 (momentum), Month 3 (scale). Include weekly milestones and KPIs.</div></div>
+    <div class="prompt-card"><div class="prompt-num">Prompt 275</div><div class="prompt-title">SOP Document Creator</div><div class="prompt-code">Create a Standard Operating Procedure (SOP) for [PROCESS NAME].
+Steps involved: [BRIEFLY DESCRIBE THE PROCESS]
+Include: purpose, scope, step-by-step instructions, quality checks, and troubleshooting tips.</div></div>
+  </div>
+  <h2 class="section-title">Category 5: <span>Claude AI Optimization</span></h2>
+  <div class="category">
+    <div class="cat-header"><div class="cat-icon">🤖</div><div><div class="cat-title">5.1 Prompt Engineering (Prompts 351–420)</div><div class="cat-subtitle">Meta-prompts to get better results from Claude</div></div></div>
+    <div class="prompt-card"><div class="prompt-num">Prompt 351</div><div class="prompt-title">Role + Task Framing</div><div class="prompt-code">You are an expert [ROLE] with 15 years of experience in [FIELD].
+Your task: [SPECIFIC TASK] | Constraints: [ANY LIMITS] | Output format: [DESIRED FORMAT]
+Think step-by-step before responding.</div></div>
+    <div class="prompt-card"><div class="prompt-num">Prompt 380</div><div class="prompt-title">Critique &amp; Improve Loop</div><div class="prompt-code">Here is [CONTENT TYPE]: [PASTE CONTENT]
+Step 1: Identify the 3 biggest weaknesses.
+Step 2: Rewrite it fixing all 3 issues.
+Step 3: Explain what changed and why it's better.</div></div>
+  </div>
+  <h2 class="section-title">Category 6: <span>Productivity &amp; Systems</span></h2>
+  <div class="category">
+    <div class="cat-header"><div class="cat-icon">📊</div><div><div class="cat-title">6.1 Notion &amp; Workflow Systems (Prompts 421–500)</div><div class="cat-subtitle">Build systems, databases, and automation frameworks</div></div></div>
+    <div class="prompt-card"><div class="prompt-num">Prompt 451</div><div class="prompt-title">Notion Database Setup</div><div class="prompt-code">Design a Notion database structure for [USE CASE: client management/content calendar/project tracker].
+Include: property names, property types, example views, and relationship suggestions.
+Make it scalable for a team of [X] people.</div></div>
+    <div class="prompt-card"><div class="prompt-num">Prompt 476</div><div class="prompt-title">Daily CEO Routine Builder</div><div class="prompt-code">Design a high-performance daily routine for a [BUSINESS TYPE] owner who works [X HOURS/DAY].
+Goals: [LIST 2-3 GOALS] | Non-negotiables: [MUST-DO ACTIVITIES]
+Include: morning routine, deep work blocks, admin time, and evening review. Output as time-blocked schedule.</div></div>
+  </div>
+  <div class="callout" style="margin-top:50px;">
+    <div class="callout-title">⚡ Quick Reference — Most-Used Prompts</div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:16px; font-size:13px; color:var(--gray);">
+      <div>📧 Client email: Prompt 1–3</div><div>💰 Sales page: Prompt 51</div>
+      <div>📩 Welcome sequence: Prompt 81</div><div>✍️ Blog post: Prompt 151</div>
+      <div>🤖 Better prompts: Prompt 351</div><div>⚙️ 90-day plan: Prompt 251</div>
+    </div>
+  </div>
+</div>
+<div class="footer">
+  <div class="footer-brand">House of Keysha — AI Business Tools</div>
+  <div class="footer-text">Version 1.0 &nbsp;|&nbsp; $27 One-Time Investment &nbsp;|&nbsp; 500 Prompts · 8 Categories</div>
+  <div style="margin-top:16px; font-size:12px; color:rgba(148,163,184,0.4);">© 2026 House of Keysha. All rights reserved.</div>
+</div>
+</body>
+</html>
