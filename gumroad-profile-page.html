@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>House of Keysha — AI Business Tools | Gumroad Store</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0a0a0a; color: #fff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+
+  /* TOP BAR */
+  .top-bar { background: #ff90e8; padding: 8px 24px; text-align: center; font-size: 13px; font-weight: 600; color: #000; }
+  .top-bar span { opacity: 0.6; font-weight: 400; margin-left: 8px; }
+
+  /* NAV */
+  .nav { background: #111; border-bottom: 1px solid #1e1e1e; padding: 0 32px; height: 52px; display: flex; align-items: center; justify-content: space-between; }
+  .nav-left { font-size: 22px; font-weight: 900; color: #ff90e8; letter-spacing: -0.5px; }
+  .nav-right { display: flex; gap: 8px; }
+  .nav-btn { background: #1e1e1e; color: #fff; border: none; padding: 7px 14px; border-radius: 6px; font-size: 13px; cursor: pointer; }
+  .nav-btn.primary { background: #ff90e8; color: #000; font-weight: 700; }
+
+  /* PROFILE HEADER */
+  .profile-header { max-width: 900px; margin: 0 auto; padding: 48px 24px 32px; display: flex; align-items: center; gap: 28px; }
+  .avatar { width: 96px; height: 96px; border-radius: 50%; background: linear-gradient(135deg, #ff90e8, #a855f7); display: flex; align-items: center; justify-content: center; font-size: 36px; flex-shrink: 0; border: 3px solid #2a2a2a; }
+  .profile-info {}
+  .profile-name { font-size: 28px; font-weight: 900; letter-spacing: -0.5px; margin-bottom: 4px; }
+  .profile-handle { font-size: 14px; color: rgba(255,255,255,0.4); margin-bottom: 10px; }
+  .profile-bio { font-size: 15px; color: rgba(255,255,255,0.7); line-height: 1.6; max-width: 520px; margin-bottom: 14px; }
+  .profile-stats { display: flex; gap: 24px; }
+  .pstat { text-align: center; }
+  .pstat-num { font-size: 18px; font-weight: 800; }
+  .pstat-label { font-size: 11px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.5px; }
+  .profile-links { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
+  .profile-link { display: inline-flex; align-items: center; gap: 5px; background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 20px; padding: 5px 12px; font-size: 12px; color: rgba(255,255,255,0.6); text-decoration: none; transition: border-color 0.2s; }
+  .profile-link:hover { border-color: #ff90e8; color: #ff90e8; }
+
+  /* TABS */
+  .tabs-bar { max-width: 900px; margin: 0 auto; padding: 0 24px; border-bottom: 1px solid #1e1e1e; display: flex; gap: 0; }
+  .tab { padding: 12px 20px; font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.4); cursor: pointer; border-bottom: 2px solid transparent; transition: color 0.2s; }
+  .tab.active { color: #fff; border-bottom-color: #ff90e8; }
+
+  /* FEATURED BANNER */
+  .featured-banner { max-width: 900px; margin: 32px auto 0; padding: 0 24px; }
+  .bundle-card { background: linear-gradient(135deg, #1a0d2e, #0d1628); border: 1px solid rgba(255,144,232,0.25); border-radius: 16px; padding: 28px 32px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+  .bundle-info { }
+  .bundle-badge { display: inline-block; background: rgba(255,144,232,0.15); color: #ff90e8; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; border-radius: 4px; padding: 3px 8px; margin-bottom: 8px; }
+  .bundle-title { font-size: 22px; font-weight: 900; margin-bottom: 6px; }
+  .bundle-desc { font-size: 14px; color: rgba(255,255,255,0.6); max-width: 420px; line-height: 1.6; }
+  .bundle-products { display: flex; gap: 6px; margin-top: 12px; flex-wrap: wrap; }
+  .bprod { font-size: 11px; background: rgba(255,255,255,0.06); border-radius: 20px; padding: 3px 10px; color: rgba(255,255,255,0.5); }
+  .bundle-cta { text-align: center; flex-shrink: 0; }
+  .bundle-price { font-size: 40px; font-weight: 900; color: #ffd700; line-height: 1; }
+  .bundle-was { font-size: 14px; color: rgba(255,255,255,0.35); text-decoration: line-through; margin-bottom: 4px; }
+  .bundle-save { font-size: 12px; color: rgba(255,215,0,0.7); margin-bottom: 14px; }
+  .bundle-btn { display: inline-block; background: #ff90e8; color: #000; font-weight: 800; font-size: 14px; padding: 12px 24px; border-radius: 8px; text-decoration: none; white-space: nowrap; }
+
+  /* PRODUCTS GRID */
+  .products-section { max-width: 900px; margin: 0 auto; padding: 32px 24px 60px; }
+  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+  .section-title { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.4); }
+  .section-count { font-size: 13px; color: rgba(255,255,255,0.3); }
+
+  .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+
+  .product-card { background: #111; border: 1px solid #1e1e1e; border-radius: 14px; overflow: hidden; cursor: pointer; transition: border-color 0.2s, transform 0.15s; text-decoration: none; color: inherit; display: block; }
+  .product-card:hover { border-color: #333; transform: translateY(-2px); }
+
+  .card-thumb { height: 160px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+  .thumb-p1 { background: linear-gradient(135deg, #050e1f 0%, #0a1f3a 50%, #050e1f 100%); }
+  .thumb-p2 { background: linear-gradient(135deg, #1a0d2e 0%, #2d1b4e 50%, #1a0d2e 100%); }
+  .thumb-p3 { background: linear-gradient(135deg, #051a0a 0%, #0d3018 50%, #051a0a 100%); }
+  .thumb-p4 { background: linear-gradient(135deg, #1a1000 0%, #2d1f00 50%, #1a1000 100%); }
+  .thumb-p5 { background: linear-gradient(135deg, #1a0510 0%, #2d0a1e 50%, #1a0510 100%); }
+  .thumb-p6 { background: linear-gradient(135deg, #001a1a 0%, #002d2d 50%, #001a1a 100%); }
+
+  .thumb-icon { font-size: 40px; position: relative; z-index: 1; }
+  .thumb-glow-blue { position: absolute; width: 100px; height: 100px; background: radial-gradient(circle, rgba(0,200,255,0.3), transparent 70%); top: 50%; left: 50%; transform: translate(-50%,-50%); }
+  .thumb-glow-purple { position: absolute; width: 100px; height: 100px; background: radial-gradient(circle, rgba(124,58,237,0.3), transparent 70%); top: 50%; left: 50%; transform: translate(-50%,-50%); }
+  .thumb-glow-green { position: absolute; width: 100px; height: 100px; background: radial-gradient(circle, rgba(37,211,102,0.3), transparent 70%); top: 50%; left: 50%; transform: translate(-50%,-50%); }
+  .thumb-glow-gold { position: absolute; width: 100px; height: 100px; background: radial-gradient(circle, rgba(255,215,0,0.3), transparent 70%); top: 50%; left: 50%; transform: translate(-50%,-50%); }
+  .thumb-glow-pink { position: absolute; width: 100px; height: 100px; background: radial-gradient(circle, rgba(255,144,232,0.3), transparent 70%); top: 50%; left: 50%; transform: translate(-50%,-50%); }
+  .thumb-glow-teal { position: absolute; width: 100px; height: 100px; background: radial-gradient(circle, rgba(0,200,200,0.3), transparent 70%); top: 50%; left: 50%; transform: translate(-50%,-50%); }
+
+  .thumb-label { position: absolute; bottom: 10px; left: 12px; right: 12px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; opacity: 0.6; text-align: center; }
+
+  .card-body { padding: 16px; }
+  .card-title { font-size: 15px; font-weight: 800; line-height: 1.3; margin-bottom: 6px; }
+  .card-desc { font-size: 12px; color: rgba(255,255,255,0.55); line-height: 1.6; margin-bottom: 12px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .card-footer-row { display: flex; align-items: center; justify-content: space-between; }
+  .card-price { font-size: 18px; font-weight: 900; }
+  .card-platform { font-size: 10px; color: rgba(255,255,255,0.3); }
+  .card-buy { background: #ff90e8; color: #000; font-size: 12px; font-weight: 800; padding: 6px 12px; border-radius: 6px; border: none; cursor: pointer; }
+  .card-buy:hover { opacity: 0.9; }
+
+  .sold-badge { position: absolute; top: 10px; right: 10px; background: rgba(0,200,255,0.15); border: 1px solid rgba(0,200,255,0.3); color: #00c8ff; font-size: 10px; font-weight: 700; border-radius: 20px; padding: 2px 8px; }
+
+  /* REVIEWS */
+  .reviews-section { max-width: 900px; margin: 0 auto; padding: 0 24px 60px; }
+  .reviews-header { margin-bottom: 16px; }
+  .reviews-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+  .review-card { background: #111; border: 1px solid #1e1e1e; border-radius: 12px; padding: 16px; }
+  .review-stars { color: #ffd700; font-size: 12px; letter-spacing: 2px; margin-bottom: 8px; }
+  .review-text { font-size: 13px; color: rgba(255,255,255,0.75); line-height: 1.7; font-style: italic; margin-bottom: 10px; }
+  .review-author { font-size: 12px; color: rgba(255,255,255,0.4); }
+  .review-product { font-size: 11px; color: #ff90e8; margin-top: 2px; }
+
+  /* FOOTER */
+  .page-footer { background: #080808; border-top: 1px solid #1a1a1a; padding: 20px 24px; text-align: center; font-size: 12px; color: rgba(255,255,255,0.25); }
+  .page-footer strong { color: rgba(255,255,255,0.4); }
+
+  /* NOTICE */
+  .notice { background: rgba(255,215,0,0.08); border: 1px solid rgba(255,215,0,0.2); border-radius: 8px; padding: 10px 16px; font-size: 12px; color: rgba(255,215,0,0.7); text-align: center; margin: 0 24px 24px; max-width: 852px; margin-left: auto; margin-right: auto; }
+
+  @media (max-width: 640px) {
+    .profile-header { flex-direction: column; align-items: flex-start; }
+    .bundle-card { flex-direction: column; }
+    .bundle-cta { text-align: left; }
+    .products-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 420px) {
+    .products-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top-bar">Powered by <strong>Gumroad</strong> <span>· Replace all YOUR-LINK placeholders with your real URLs before sharing</span></div>
+
+<div class="nav">
+  <div class="nav-left">gumroad</div>
+  <div class="nav-right">
+    <button class="nav-btn">Log in</button>
+    <button class="nav-btn primary">Start selling</button>
+  </div>
+</div>
+
+<!-- PROFILE -->
+<div class="profile-header">
+  <div class="avatar">🏠</div>
+  <div class="profile-info">
+    <div class="profile-name">House of Keysha</div>
+    <div class="profile-handle">@houseofkeysha</div>
+    <div class="profile-bio">AI automation systems, Claude prompts, and business blueprints for entrepreneurs who want to work smarter. All products tested on real businesses. UAE-based.</div>
+    <div class="profile-links">
+      <a href="#" class="profile-link">🌐 Your Website</a>
+      <a href="#" class="profile-link">💼 LinkedIn</a>
+      <a href="#" class="profile-link">📱 Instagram</a>
+      <a href="#" class="profile-link">✉️ Newsletter</a>
+    </div>
+    <div class="profile-stats" style="margin-top:16px;">
+      <div class="pstat"><div class="pstat-num">6</div><div class="pstat-label">Products</div></div>
+      <div class="pstat"><div class="pstat-num">$294</div><div class="pstat-label">Full Stack Value</div></div>
+      <div class="pstat"><div class="pstat-num">★ 5.0</div><div class="pstat-label">Rating</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs-bar">
+  <div class="tab active">Products</div>
+  <div class="tab">Posts</div>
+  <div class="tab">Reviews</div>
+</div>
+
+<!-- NOTICE -->
+<div class="notice" style="margin-top:24px;">
+  📌 This is a <strong>design reference file</strong> — open in your browser to see how your Gumroad store will look. Replace all placeholder links before going live.
+</div>
+
+<!-- BUNDLE BANNER -->
+<div class="featured-banner">
+  <div class="bundle-card">
+    <div class="bundle-info">
+      <div class="bundle-badge">⚡ Best Value — Full Stack Bundle</div>
+      <div class="bundle-title">Complete AI Business System</div>
+      <div class="bundle-desc">All 6 products in one bundle. AI agents, 500 prompts, WhatsApp automation, Notion OS, Telegram monetization, and 30-day content system.</div>
+      <div class="bundle-products">
+        <span class="bprod">🤖 AI Agent Empire</span>
+        <span class="bprod">💬 500 Prompts</span>
+        <span class="bprod">📱 WhatsApp Blueprint</span>
+        <span class="bprod">🗂 Notion OS</span>
+        <span class="bprod">📣 Telegram Blueprint</span>
+        <span class="bprod">📅 Content System</span>
+      </div>
+    </div>
+    <div class="bundle-cta">
+      <div class="bundle-was">$294 individually</div>
+      <div class="bundle-price">$197</div>
+      <div class="bundle-save">Save $97 — DM for code</div>
+      <a href="mailto:YOUR-EMAIL?subject=Bundle Deal" class="bundle-btn">Get Bundle →</a>
+    </div>
+  </div>
+</div>
+
+<!-- PRODUCTS -->
+<div class="products-section">
+  <div class="section-header">
+    <div class="section-title">All Products</div>
+    <div class="section-count">6 products</div>
+  </div>
+
+  <div class="products-grid">
+
+    <!-- Product 1 -->
+    <a href="https://gumroad.com/l/YOUR-PRODUCT-LINK" class="product-card">
+      <div class="card-thumb thumb-p1">
+        <div class="thumb-glow-blue"></div>
+        <div class="thumb-icon">🤖</div>
+        <div class="sold-badge">⭐ Best Seller</div>
+        <div class="thumb-label" style="color:#00c8ff;">6 Autonomous AI Agents</div>
+      </div>
+      <div class="card-body">
+        <div class="card-title">The AI Agent Empire</div>
+        <div class="card-desc">Setup 6 autonomous AI agents that handle email, content, leads, market research, code, and analytics — 48-hour setup, $16/month to run.</div>
+        <div class="card-footer-row">
+          <div>
+            <div class="card-price">$97</div>
+            <div class="card-platform">Gumroad · Instant Download</div>
+          </div>
+          <button class="card-buy">I want this!</button>
+        </div>
+      </div>
+    </a>
+
+    <!-- Product 2 -->
+    <a href="https://etsy.com/shop/YOUR-SHOP-LINK" class="product-card">
+      <div class="card-thumb thumb-p2">
+        <div class="thumb-glow-purple"></div>
+        <div class="thumb-icon">💬</div>
+        <div class="thumb-label" style="color:#a78bfa;">For Business Owners</div>
+      </div>
+      <div class="card-body">
+        <div class="card-title">500 Claude Prompts for Business</div>
+        <div class="card-desc">500 copy-paste Claude prompts for email, sales, content, operations, automation, and productivity. PDF + Notion database.</div>
+        <div class="card-footer-row">
+          <div>
+            <div class="card-price">$27</div>
+            <div class="card-platform">Etsy · PDF + Notion</div>
+          </div>
+          <button class="card-buy">I want this!</button>
+        </div>
+      </div>
+    </a>
+
+    <!-- Product 3 -->
+    <a href="https://gumroad.com/l/YOUR-WHATSAPP-PRODUCT-LINK" class="product-card">
+      <div class="card-thumb thumb-p3">
+        <div class="thumb-glow-green"></div>
+        <div class="thumb-icon">📱</div>
+        <div class="thumb-label" style="color:#25d366;">UAE + Global · n8n Workflows</div>
+      </div>
+      <div class="card-body">
+        <div class="card-title">WhatsApp Business Automation Blueprint</div>
+        <div class="card-desc">8 ready-to-import n8n workflows that automate your entire WhatsApp channel. Arabic + English. UAE PDPL compliant.</div>
+        <div class="card-footer-row">
+          <div>
+            <div class="card-price">$57</div>
+            <div class="card-platform">Gumroad · 8 Workflows Included</div>
+          </div>
+          <button class="card-buy">I want this!</button>
+        </div>
+      </div>
+    </a>
+
+    <!-- Product 4 -->
+    <a href="https://etsy.com/shop/YOUR-NOTION-LINK" class="product-card">
+      <div class="card-thumb thumb-p4">
+        <div class="thumb-glow-gold"></div>
+        <div class="thumb-icon">🗂</div>
+        <div class="thumb-label" style="color:#ffd700;">8 Linked Databases</div>
+      </div>
+      <div class="card-body">
+        <div class="card-title">Notion Business OS</div>
+        <div class="card-desc">Complete entrepreneur workspace — CRM, projects, tasks, content calendar, finances, meetings, SOPs, and goals. Free Notion account.</div>
+        <div class="card-footer-row">
+          <div>
+            <div class="card-price">$37</div>
+            <div class="card-platform">Etsy · Notion Template</div>
+          </div>
+          <button class="card-buy">I want this!</button>
+        </div>
+      </div>
+    </a>
+
+    <!-- Product 5 -->
+    <a href="https://gumroad.com/l/YOUR-TELEGRAM-LINK" class="product-card">
+      <div class="card-thumb thumb-p5">
+        <div class="thumb-glow-pink"></div>
+        <div class="thumb-icon">📣</div>
+        <div class="thumb-label" style="color:#ff90e8;">UAE + MENA Strategy</div>
+      </div>
+      <div class="card-body">
+        <div class="card-title">Telegram Monetization Blueprint</div>
+        <div class="card-desc">Build a paid Telegram channel from 0 to $3k/month. 5 monetization methods, 30-day roadmap, Arabic templates, UAE-specific strategy.</div>
+        <div class="card-footer-row">
+          <div>
+            <div class="card-price">$47</div>
+            <div class="card-platform">Gumroad · 60-Page Guide</div>
+          </div>
+          <button class="card-buy">I want this!</button>
+        </div>
+      </div>
+    </a>
+
+    <!-- Product 6 -->
+    <a href="https://etsy.com/shop/YOUR-CONTENT-LINK" class="product-card">
+      <div class="card-thumb thumb-p6">
+        <div class="thumb-glow-teal"></div>
+        <div class="thumb-icon">📅</div>
+        <div class="thumb-label" style="color:#00cccc;">30 Days · Done For You</div>
+      </div>
+      <div class="card-body">
+        <div class="card-title">30-Day AI Content System</div>
+        <div class="card-desc">100 Claude prompts for 30 days of LinkedIn, Instagram, and Twitter content. Brand Voice Doc + Notion calendar + 60-min monthly refill.</div>
+        <div class="card-footer-row">
+          <div>
+            <div class="card-price">$29</div>
+            <div class="card-platform">Etsy · Works With Free Claude</div>
+          </div>
+          <button class="card-buy">I want this!</button>
+        </div>
+      </div>
+    </a>
+
+  </div>
+</div>
+
+<!-- REVIEWS -->
+<div class="reviews-section">
+  <div class="reviews-header">
+    <div class="section-title">Recent Reviews</div>
+  </div>
+  <div class="reviews-grid">
+    <div class="review-card">
+      <div class="review-stars">★★★★★</div>
+      <div class="review-text">"Set up all 6 agents over a weekend. By Monday my inbox was sorted, content was drafted, and my competitor report was waiting. Paid for itself on day one."</div>
+      <div class="review-author">Digital Agency Owner</div>
+      <div class="review-product">The AI Agent Empire</div>
+    </div>
+    <div class="review-card">
+      <div class="review-stars">★★★★★</div>
+      <div class="review-text">"The cold email prompt alone got me 2 discovery calls in 24 hours. 500 prompts and I've saved 3 hours this week. Best $27 I've spent on my business."</div>
+      <div class="review-author">Freelance Consultant</div>
+      <div class="review-product">500 Claude Prompts</div>
+    </div>
+    <div class="review-card">
+      <div class="review-stars">★★★★★</div>
+      <div class="review-text">"Before: 3 staff on WhatsApp. After: 1 handling escalations. No-shows down from 30% to 8%. Google reviews went from 12 to 89. Worth every dirham."</div>
+      <div class="review-author">Dubai Clinic Owner</div>
+      <div class="review-product">WhatsApp Automation Blueprint</div>
+    </div>
+    <div class="review-card">
+      <div class="review-stars">★★★★★</div>
+      <div class="review-text">"Cancelled 4 subscriptions after setting this up. Trello, Monday, a CRM, and a spreadsheet app. All replaced for $37. Setup took one Saturday."</div>
+      <div class="review-author">Agency Founder</div>
+      <div class="review-product">Notion Business OS</div>
+    </div>
+    <div class="review-card">
+      <div class="review-stars">★★★★★</div>
+      <div class="review-text">"The UAE section alone was worth $47. First time I've seen a Telegram guide actually built for our market. Had InviteMember running in 20 minutes."</div>
+      <div class="review-author">Abu Dhabi Creator</div>
+      <div class="review-product">Telegram Monetization Blueprint</div>
+    </div>
+    <div class="review-card">
+      <div class="review-stars">★★★★★</div>
+      <div class="review-text">"30 days of LinkedIn content in 90 minutes. The Brand Voice Document is the secret — every output actually sounds like me. Engagement tripled in 6 weeks."</div>
+      <div class="review-author">Business Coach</div>
+      <div class="review-product">30-Day AI Content System</div>
+    </div>
+  </div>
+</div>
+
+<div class="page-footer">
+  <strong>House of Keysha</strong> · AI Business Tools · UAE-Based · All products available for instant download<br>
+  <span style="margin-top:6px;display:block;">This is a design reference — your actual Gumroad store at <strong>gumroad.com/YOUR-USERNAME</strong> will look like this after you list all 6 products.</span>
+</div>
+
+</body>
+</html>
